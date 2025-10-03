@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo, useRef } from 'react';
-import axios from 'axios';
+import axios from '../utils/axiosConfig';
 import toast from 'react-hot-toast';
 
 // Función de reintento con backoff exponencial mejorada
