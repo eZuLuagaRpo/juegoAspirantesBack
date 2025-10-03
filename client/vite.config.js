@@ -21,8 +21,12 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       outDir: 'dist',
-      sourcemap: true
+      sourcemap: true,
+      rollupOptions: {
+        external: []
+      }
     },
+    publicDir: 'public',
     // Define environment variables
     define: {
       __API_BASE_URL__: JSON.stringify(

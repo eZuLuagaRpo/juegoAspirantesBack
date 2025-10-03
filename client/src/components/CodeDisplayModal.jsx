@@ -128,27 +128,6 @@ const CodeDisplayModal = ({ isOpen, onClose, user, reward, completionCode, onLog
                     )}
                     <span>{isCopying ? 'Copiando...' : 'Copiar'}</span>
                   </button>
-                  
-                  <button
-                    onClick={handleSendEmail}
-                    disabled={isSendingEmail || emailSent}
-                    className={`flex items-center justify-center space-x-1 px-3 py-1 rounded-lg transition-colors text-xs ${
-                      emailSent 
-                        ? 'bg-green-100 text-green-700 border border-green-300' 
-                        : 'bg-usb-orange-500 hover:bg-usb-orange-600 text-white'
-                    }`}
-                  >
-                    {isSendingEmail ? (
-                      <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div>
-                    ) : emailSent ? (
-                      <Check className="w-3 h-3" />
-                    ) : (
-                      <Mail className="w-3 h-3" />
-                    )}
-                    <span>
-                      {isSendingEmail ? 'Enviando...' : emailSent ? 'Enviado' : 'Email'}
-                    </span>
-                  </button>
                 </div>
               </div>
             </div>

@@ -3,6 +3,10 @@ services:
     name: juego-aspirantes-client
     buildCommand: cd client && npm ci --include=dev && npm run build
     publishPath: client/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
     envVars:
       - key: NODE_ENV
         value: production
