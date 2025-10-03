@@ -17,7 +17,6 @@ const authRoutes = USE_POSTGRESQL ? authPostgres : authMemory;
 const progressRoutes = USE_POSTGRESQL ? progressPostgres : progressMemory;
 const rewardsRoutes = USE_POSTGRESQL ? rewardsPostgres : rewardsMemory;
 
-console.log(`🗄️ Usando: ${USE_POSTGRESQL ? 'PostgreSQL' : 'Memoria'} para almacenamiento`);
 
 module.exports = {
   USE_POSTGRESQL,
@@ -31,6 +30,5 @@ module.exports = {
   // Para testing
   setStorageType: (usePostgres) => {
     process.env.USE_POSTGRESQL = usePostgres ? 'true' : 'false';
-    console.log(`🔄 Cambiado a: ${usePostgres ? 'PostgreSQL' : 'Memoria'}`);
   }
 };

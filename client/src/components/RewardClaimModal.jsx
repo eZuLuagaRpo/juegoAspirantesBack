@@ -94,7 +94,6 @@ const RewardClaimModal = ({ isOpen, onClose, user, reward, onClaimReward, isClai
             {process.env.NODE_ENV === 'development' && (
               <button
                 onClick={async () => {
-                  console.log('🧪 Ejecutando prueba de Google Sheets...');
                   const { testGoogleSheetsConnection } = await import('../utils/googleSheets.js');
                   await testGoogleSheetsConnection();
                 }}

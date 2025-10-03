@@ -20,9 +20,6 @@ const configureAxios = () => {
   
   if (baseURL) {
     axios.defaults.baseURL = baseURL;
-    console.log('🔧 Axios configured with base URL:', baseURL);
-  } else {
-    console.log('🔧 Axios configured for development (using proxy)');
   }
   
   // Set default timeout
@@ -31,7 +28,6 @@ const configureAxios = () => {
   // Add request interceptor for logging
   axios.interceptors.request.use(
     (config) => {
-      console.log(`🚀 API Request: ${config.method?.toUpperCase()} ${config.url}`);
       return config;
     },
     (error) => {
@@ -43,7 +39,6 @@ const configureAxios = () => {
   // Add response interceptor for logging
   axios.interceptors.response.use(
     (response) => {
-      console.log(`✅ API Response: ${response.status} ${response.config.url}`);
       return response;
     },
     (error) => {

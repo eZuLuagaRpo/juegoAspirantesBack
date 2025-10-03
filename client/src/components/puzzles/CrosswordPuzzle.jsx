@@ -219,7 +219,6 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
           const clueKey = `${clue.number}-${clue.direction}`;
           setCompletedWords(prev => {
             const newSet = new Set([...prev, clueKey]);
-            console.log('Palabra completada:', { word: clue.word, clueKey, newSetSize: newSet.size });
             return newSet;
           });
           
@@ -393,10 +392,7 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
     const totalClues = clues.length;
     const completedClues = completedWords.size;
     
-    console.log('Verificando finalización del crucigrama:', { totalClues, completedClues, gameCompleted });
-    
     if (completedClues === totalClues && !gameCompleted) {
-      console.log('¡Crucigrama completado!');
       setGameCompleted(true);
       onComplete();
     }
@@ -404,11 +400,6 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
 
   // Verificar finalización automáticamente cuando cambien las palabras completadas
   useEffect(() => {
-    console.log('useEffect de verificación ejecutado:', { 
-      completedWordsSize: completedWords.size, 
-      cluesLength: clues.length,
-      gameCompleted 
-    });
     
     if (completedWords.size > 0 && clues.length > 0) {
       checkGameCompletion();
@@ -457,7 +448,6 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
       // Marcar la palabra como completada y bloqueada
       setCompletedWords(prev => {
         const newSet = new Set([...prev, clueKey]);
-        console.log('Palabra completada por pista:', { word: randomClue.word, clueKey, newSetSize: newSet.size });
         return newSet;
       });
       

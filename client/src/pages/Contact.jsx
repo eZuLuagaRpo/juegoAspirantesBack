@@ -32,7 +32,6 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Aquí se podría integrar con un servicio de email
-    console.log('Formulario enviado:', formData);
     setSubmitted(true);
     
     // Resetear después de 3 segundos

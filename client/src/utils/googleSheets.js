@@ -2,12 +2,6 @@
 export const submitToGoogleSheets = async (userData, rewardData, completionCode) => {
   const formUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdQOF_HVcfUCvp4aZ5MjP-Q_FOsZgsumsxhu3hDJccbiaWTFg/formResponse';
   
-  console.log('📤 Enviando datos a Google Sheets:', {
-    userData,
-    rewardData,
-    completionCode,
-    formUrl
-  });
   
   // Validar datos requeridos
   if (!userData || !userData.studentId || !userData.firstName || !userData.lastName || !userData.email) {
@@ -36,26 +30,18 @@ export const submitToGoogleSheets = async (userData, rewardData, completionCode)
   formData.append('entry.492956207', completionCode || ''); // codigo recompensa
 
   // Log de datos que se van a enviar
-  console.log('📋 Datos del FormData:');
-  for (let [key, value] of formData.entries()) {
-    console.log(`  ${key}: ${value}`);
-  }
-
   try {
-    console.log('🚀 Enviando petición POST...');
     const response = await fetch(formUrl, {
       method: 'POST',
       mode: 'no-cors', // Necesario para formularios de Google
       body: formData
     });
 
-    console.log('✅ Respuesta recibida (no-cors):', response);
     
     // Con no-cors no podemos verificar el status, pero si no hay error significa que se envió
     // Sin embargo, podemos agregar un pequeño delay para asegurar que la petición se procese
     await new Promise(resolve => setTimeout(resolve, 1000));
     
-    console.log('🎉 Datos enviados exitosamente a Google Sheets');
     return { success: true };
   } catch (error) {
     console.error('❌ Error enviando datos a Google Sheets:', error);

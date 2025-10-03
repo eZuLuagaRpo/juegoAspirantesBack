@@ -20,7 +20,6 @@ export const useGameCompletion = () => {
   // Resetear estados cuando cambia el usuario
   useEffect(() => {
     if (user?.id !== lastUserId) {
-      console.log('🔄 Usuario cambiado, reseteando estados de Google Sheets...');
       setGoogleSheetsSent(false);
       setIsSendingToGoogleSheets(false);
       setLastUserId(user?.id);
@@ -33,7 +32,6 @@ export const useGameCompletion = () => {
       const key = `googleSheetsSent_${user.id}`;
       const alreadySent = localStorage.getItem(key) === 'true';
       if (alreadySent) {
-        console.log('📋 Usuario ya tiene datos enviados a Google Sheets (desde localStorage)');
         setGoogleSheetsSent(true);
       }
     }
@@ -78,7 +76,6 @@ export const useGameCompletion = () => {
         setRewardData(reward);
         
         // NO enviar automáticamente - se enviará cuando el usuario haga clic en "Reclamar Recompensa"
-        console.log('🎯 Juego completado - Modal listo para mostrar');
         
         // Mostrar directamente el modal de código
         setShowCodeModal(true);
@@ -98,21 +95,15 @@ export const useGameCompletion = () => {
   const sendToGoogleSheetsAutomatically = async (userData, rewardData, completionCode) => {
     // Validación: Solo enviar si no se ha enviado antes
     if (googleSheetsSent) {
-      console.log('⚠️ Datos ya enviados a Google Sheets anteriormente. Saltando envío.');
       return { success: true, alreadySent: true };
     }
 
     // Validación: Evitar envíos simultáneos
     if (isSendingToGoogleSheets) {
-      console.log('⚠️ Ya se está enviando a Google Sheets. Saltando envío duplicado.');
       return { success: true, alreadySending: true };
     }
 
     try {
-      console.log('📤 Enviando datos automáticamente a Google Sheets (PRIMERA VEZ)...');
-      console.log('👤 Usuario:', userData);
-      console.log('🎁 Recompensa:', rewardData);
-      console.log('🔑 Código:', completionCode);
 
       // Marcar como enviando para evitar duplicados
       setIsSendingToGoogleSheets(true);
@@ -129,17 +120,13 @@ export const useGameCompletion = () => {
       // Enviar datos a Google Sheets
       const result = await submitToGoogleSheets(userDataForSheets, rewardData, completionCode);
       
-      console.log('📊 Resultado del envío automático a Google Sheets:', result);
-      
       if (result.success) {
-        console.log('✅ Datos enviados exitosamente a Google Sheets automáticamente');
         setGoogleSheetsSent(true); // Marcar como enviado
         
         // Guardar en localStorage para persistencia
         if (userData.id) {
           const key = `googleSheetsSent_${userData.id}`;
           localStorage.setItem(key, 'true');
-          console.log('💾 Estado guardado en localStorage:', key);
         }
         
         toast.success('¡Código generado y datos registrados exitosamente!', {
@@ -197,11 +184,7 @@ export const useGameCompletion = () => {
     }
 
     try {
-      console.log('🎯 Usuario hizo clic en "Reclamar Recompensa" - Enviando a Google Sheets...');
       setIsClaiming(true);
-      
-      console.log('🔑 Código existente:', completionCode);
-      console.log('🎁 Recompensa existente:', rewardData);
 
       // Enviar datos a Google Sheets SOLO cuando se hace clic
       await sendToGoogleSheetsAutomatically(user, rewardData, completionCode);

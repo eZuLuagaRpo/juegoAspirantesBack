@@ -213,7 +213,6 @@ export const GameProvider = ({ children }) => {
       if (retryCount < maxRetries) {
         // Retry automático con delay exponencial
         const delay = Math.pow(2, retryCount) * 1000; // 1s, 2s, 4s
-        console.log(`Reintentando carga de niveles en ${delay}ms (intento ${retryCount + 1}/${maxRetries})`);
         
         setTimeout(() => {
           loadGameLevels(retryCount + 1);
