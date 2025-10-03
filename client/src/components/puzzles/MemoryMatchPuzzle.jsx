@@ -50,7 +50,7 @@ const MemoryMatchPuzzle = forwardRef(({
   const [progress, setProgress] = useState(0);
   const [isMounted, setIsMounted] = useState(false);
 
-  // Datos del puzzle - 10 pares de conceptos financieros
+  // Datos del puzzle - 10 pares de cartas idénticas
   const financialPairs = useMemo(() => [
     // PAGOS Y SERVICIOS (2 pares)
     {
@@ -59,18 +59,18 @@ const MemoryMatchPuzzle = forwardRef(({
       color: '#3B82F6',
       cards: [
         {
-          id: 'matricula',
+          id: 'matricula_1',
           text: 'MATRÍCULA',
           emoji: '📚',
           description: 'Inscripción Académica',
           definition: 'La matrícula es el costo de inscripción académica que se cancela mediante un pago formal con comprobante.'
         },
         {
-          id: 'pago',
-          text: 'PAGO',
-          emoji: '💳',
-          description: 'Transacción Financiera',
-          definition: 'El pago es la transacción financiera que se realiza para cancelar la matrícula y otros servicios académicos.'
+          id: 'matricula_2',
+          text: 'MATRÍCULA',
+          emoji: '📚',
+          description: 'Inscripción Académica',
+          definition: 'La matrícula es el costo de inscripción académica que se cancela mediante un pago formal con comprobante.'
         }
       ],
       educationalTip: 'Pagar antes de la fecha límite suele incluir descuentos por pronto pago.'
@@ -81,21 +81,21 @@ const MemoryMatchPuzzle = forwardRef(({
       color: '#3B82F6',
       cards: [
         {
-          id: 'recibo',
-          text: 'RECIBO',
-          emoji: '🧾',
-          description: 'Comprobante de Pago',
-          definition: 'El recibo es el documento que certifica que se ha realizado un pago exitoso.'
+          id: 'pago_1',
+          text: 'PAGO',
+          emoji: '💳',
+          description: 'Transacción Financiera',
+          definition: 'El pago es la transacción financiera que se realiza para cancelar la matrícula y otros servicios académicos.'
         },
         {
-          id: 'comprobante',
-          text: 'COMPROBANTE',
-          emoji: '✅',
-          description: 'Documento de Validación',
-          definition: 'El comprobante es el documento oficial que valida y certifica una transacción financiera.'
+          id: 'pago_2',
+          text: 'PAGO',
+          emoji: '💳',
+          description: 'Transacción Financiera',
+          definition: 'El pago es la transacción financiera que se realiza para cancelar la matrícula y otros servicios académicos.'
         }
       ],
-      educationalTip: 'Siempre guarda tus comprobantes de pago para futuras referencias y reclamos.'
+      educationalTip: 'El pago oportuno mantiene tu historial crediticio en buen estado.'
     },
     // CRÉDITO Y FINANCIACIÓN (3 pares)
     {
@@ -104,18 +104,18 @@ const MemoryMatchPuzzle = forwardRef(({
       color: '#10B981',
       cards: [
         {
-          id: 'credito',
+          id: 'credito_1',
           text: 'CRÉDITO',
           emoji: '💰',
           description: 'Préstamo Educativo',
           definition: 'El crédito es un préstamo de dinero que se otorga para financiar estudios superiores.'
         },
         {
-          id: 'banco',
-          text: 'BANCO',
-          emoji: '🏦',
-          description: 'Institución Financiera',
-          definition: 'El banco es la institución financiera que otorga créditos educativos y otros servicios financieros.'
+          id: 'credito_2',
+          text: 'CRÉDITO',
+          emoji: '💰',
+          description: 'Préstamo Educativo',
+          definition: 'El crédito es un préstamo de dinero que se otorga para financiar estudios superiores.'
         }
       ],
       educationalTip: 'ICETEX ofrece las mejores condiciones para créditos educativos en Colombia.'
@@ -126,18 +126,18 @@ const MemoryMatchPuzzle = forwardRef(({
       color: '#10B981',
       cards: [
         {
-          id: 'interes',
+          id: 'interes_1',
           text: 'INTERÉS',
           emoji: '📈',
           description: 'Costo del Dinero',
           definition: 'El interés es el costo adicional que se paga por usar dinero prestado.'
         },
         {
-          id: 'porcentaje',
-          text: 'PORCENTAJE',
-          emoji: '%',
-          description: 'Medida de Interés',
-          definition: 'El porcentaje es la forma de expresar la tasa de interés que se cobra por un crédito.'
+          id: 'interes_2',
+          text: 'INTERÉS',
+          emoji: '📈',
+          description: 'Costo del Dinero',
+          definition: 'El interés es el costo adicional que se paga por usar dinero prestado.'
         }
       ],
       educationalTip: 'Compara las tasas de interés antes de solicitar un crédito educativo.'
@@ -148,21 +148,21 @@ const MemoryMatchPuzzle = forwardRef(({
       color: '#10B981',
       cards: [
         {
-          id: 'cuotas',
+          id: 'cuotas_1',
           text: 'CUOTAS',
           emoji: '📅',
           description: 'Pagos Periódicos',
           definition: 'Las cuotas son los pagos periódicos que se realizan para cancelar un crédito.'
         },
         {
-          id: 'mensualidad',
-          text: 'MENSUALIDAD',
-          emoji: '🗓️',
-          description: 'Pago Mensual',
-          definition: 'La mensualidad es el pago que se realiza cada mes para cancelar las cuotas del crédito.'
+          id: 'cuotas_2',
+          text: 'CUOTAS',
+          emoji: '📅',
+          description: 'Pagos Periódicos',
+          definition: 'Las cuotas son los pagos periódicos que se realizan para cancelar un crédito.'
         }
       ],
-      educationalTip: 'Planifica tus finanzas para cubrir todas las mensualidades del crédito.'
+      educationalTip: 'Planifica tus finanzas para cubrir todas las cuotas del crédito.'
     },
     // BECAS Y SUBSIDIOS (3 pares)
     {
@@ -171,18 +171,18 @@ const MemoryMatchPuzzle = forwardRef(({
       color: '#F59E0B',
       cards: [
         {
-          id: 'beca',
+          id: 'beca_1',
           text: 'BECA',
           emoji: '🎓',
           description: 'Ayuda Económica',
           definition: 'La beca es una ayuda económica que se otorga por méritos académicos, deportivos o situación socioeconómica.'
         },
         {
-          id: 'descuento',
-          text: 'DESCUENTO',
-          emoji: '💸',
-          description: 'Reducción de Costo',
-          definition: 'El descuento es la reducción en el costo de la matrícula otorgada por diferentes motivos.'
+          id: 'beca_2',
+          text: 'BECA',
+          emoji: '🎓',
+          description: 'Ayuda Económica',
+          definition: 'La beca es una ayuda económica que se otorga por méritos académicos, deportivos o situación socioeconómica.'
         }
       ],
       educationalTip: 'Mantener buen promedio puede reducir significativamente tus gastos educativos.'
@@ -193,21 +193,21 @@ const MemoryMatchPuzzle = forwardRef(({
       color: '#F59E0B',
       cards: [
         {
-          id: 'subsidio',
+          id: 'subsidio_1',
           text: 'SUBSIDIO',
           emoji: '🤝',
           description: 'Apoyo Económico',
           definition: 'El subsidio es un apoyo económico que se otorga a estudiantes con necesidades económicas.'
         },
         {
-          id: 'ayuda',
-          text: 'AYUDA',
-          emoji: '💝',
-          description: 'Asistencia Financiera',
-          definition: 'La ayuda es la asistencia financiera que se proporciona a estudiantes que la necesitan.'
+          id: 'subsidio_2',
+          text: 'SUBSIDIO',
+          emoji: '🤝',
+          description: 'Apoyo Económico',
+          definition: 'El subsidio es un apoyo económico que se otorga a estudiantes con necesidades económicas.'
         }
       ],
-      educationalTip: 'Los subsidios y ayudas pueden combinarse con becas para maximizar el apoyo económico.'
+      educationalTip: 'Los subsidios pueden combinarse con becas para maximizar el apoyo económico.'
     },
     {
       id: 'pair_8',
@@ -215,21 +215,21 @@ const MemoryMatchPuzzle = forwardRef(({
       color: '#F59E0B',
       cards: [
         {
-          id: 'merito',
-          text: 'MÉRITO',
-          emoji: '⭐',
-          description: 'Excelencia Académica',
-          definition: 'El mérito es el reconocimiento por excelencia académica que puede otorgar beneficios económicos.'
+          id: 'descuento_1',
+          text: 'DESCUENTO',
+          emoji: '💸',
+          description: 'Reducción de Costo',
+          definition: 'El descuento es la reducción en el costo de la matrícula otorgada por diferentes motivos.'
         },
         {
-          id: 'excelencia',
-          text: 'EXCELENCIA',
-          emoji: '🏆',
-          description: 'Alto Rendimiento',
-          definition: 'La excelencia es el alto rendimiento académico que se premia con becas y reconocimientos.'
+          id: 'descuento_2',
+          text: 'DESCUENTO',
+          emoji: '💸',
+          description: 'Reducción de Costo',
+          definition: 'El descuento es la reducción en el costo de la matrícula otorgada por diferentes motivos.'
         }
       ],
-      educationalTip: 'La excelencia académica es la clave para acceder a las mejores becas y beneficios.'
+      educationalTip: 'Los descuentos por pronto pago pueden ahorrarte dinero significativo.'
     },
     // GESTIÓN FINANCIERA (2 pares)
     {
@@ -238,18 +238,18 @@ const MemoryMatchPuzzle = forwardRef(({
       color: '#8B5CF6',
       cards: [
         {
-          id: 'presupuesto',
+          id: 'presupuesto_1',
           text: 'PRESUPUESTO',
           emoji: '📋',
           description: 'Plan Financiero',
           definition: 'El presupuesto es la planificación financiera que incluye ingresos, gastos y ahorros.'
         },
         {
-          id: 'planificacion',
-          text: 'PLANIFICACIÓN',
-          emoji: '📊',
-          description: 'Estrategia Financiera',
-          definition: 'La planificación es la estrategia financiera para alcanzar objetivos económicos a largo plazo.'
+          id: 'presupuesto_2',
+          text: 'PRESUPUESTO',
+          emoji: '📋',
+          description: 'Plan Financiero',
+          definition: 'El presupuesto es la planificación financiera que incluye ingresos, gastos y ahorros.'
         }
       ],
       educationalTip: 'Un buen presupuesto estudiantil incluye matrícula, materiales, transporte y alimentación.'
@@ -260,18 +260,18 @@ const MemoryMatchPuzzle = forwardRef(({
       color: '#8B5CF6',
       cards: [
         {
-          id: 'vencimiento',
+          id: 'vencimiento_1',
           text: 'VENCIMIENTO',
           emoji: '⏰',
           description: 'Fecha Límite',
           definition: 'El vencimiento es la fecha límite para realizar un pago sin incurrir en recargos.'
         },
         {
-          id: 'fecha_limite',
-          text: 'FECHA LÍMITE',
-          emoji: '📅',
-          description: 'Término Final',
-          definition: 'La fecha límite es el último día para cumplir con una obligación financiera.'
+          id: 'vencimiento_2',
+          text: 'VENCIMIENTO',
+          emoji: '⏰',
+          description: 'Fecha Límite',
+          definition: 'El vencimiento es la fecha límite para realizar un pago sin incurrir en recargos.'
         }
       ],
       educationalTip: 'Pagar antes del vencimiento evita recargos y mantiene un buen historial crediticio.'
@@ -635,15 +635,15 @@ const MemoryMatchPuzzle = forwardRef(({
   const rightSidebarConfig = useMemo(() => ({
     type: 'right',
     title: 'Memory Match Financiero',
-    subtitle: 'Empareja conceptos financieros relacionados',
+    subtitle: 'Encuentra las cartas idénticas',
     sections: [
       {
         title: '🎮 Cómo Jugar',
         type: 'instructions',
         instructions: [
           'Haz clic en una carta para voltearla',
-          'Haz clic en otra carta para formar un par',
-          'Los pares correctos se mantienen volteados',
+          'Haz clic en otra carta para encontrar la igual',
+          'Las cartas idénticas se mantienen volteadas',
           'Usa las pistas para que el juego te muestre un par automáticamente',
           'Completa todos los pares para ganar'
         ]
@@ -653,7 +653,7 @@ const MemoryMatchPuzzle = forwardRef(({
         type: 'list',
         items: [
           'Memorizar conceptos financieros',
-          'Asociar términos con definiciones',
+          'Encontrar cartas idénticas',
           'Desarrollar habilidades de memoria',
           'Conocer vocabulario financiero'
         ]
@@ -749,7 +749,7 @@ const MemoryMatchPuzzle = forwardRef(({
                     🎯 Memory Match - Conceptos Financieros
                   </h2>
                   <p className="text-gray-600">
-                    Empareja los conceptos financieros relacionados para aprender sobre cartera universitaria
+                    Encuentra las cartas idénticas para aprender sobre conceptos financieros universitarios
                   </p>
                 </div>
 
@@ -796,38 +796,22 @@ const MemoryMatchPuzzle = forwardRef(({
 
               {/* Contenido del par */}
               <div className="mb-6">
-                <div className="flex items-center justify-center space-x-4 mb-4">
+                <div className="flex items-center justify-center mb-4">
                   <div className="text-center">
-                    <div className="text-3xl mb-2">{educationalContent.cards[0].emoji}</div>
-                    <div className="font-bold text-gray-800">{educationalContent.cards[0].text}</div>
+                    <div className="text-4xl mb-3">{educationalContent.cards[0].emoji}</div>
+                    <div className="font-bold text-gray-800 text-lg">{educationalContent.cards[0].text}</div>
                     <div className="text-sm text-gray-600">{educationalContent.cards[0].description}</div>
-                  </div>
-                  <div className="text-2xl text-gray-400">↔</div>
-                  <div className="text-center">
-                    <div className="text-3xl mb-2">{educationalContent.cards[1].emoji}</div>
-                    <div className="font-bold text-gray-800">{educationalContent.cards[1].text}</div>
-                    <div className="text-sm text-gray-600">{educationalContent.cards[1].description}</div>
                   </div>
                 </div>
 
-                {/* Definiciones */}
-                <div className="space-y-4">
-                  <div className="p-4 bg-blue-50 rounded-lg">
-                    <h4 className="font-semibold text-blue-800 mb-2">
-                      {educationalContent.cards[0].text}
-                    </h4>
-                    <p className="text-blue-700 text-sm">
-                      {educationalContent.cards[0].definition}
-                    </p>
-                  </div>
-                  <div className="p-4 bg-green-50 rounded-lg">
-                    <h4 className="font-semibold text-green-800 mb-2">
-                      {educationalContent.cards[1].text}
-                    </h4>
-                    <p className="text-green-700 text-sm">
-                      {educationalContent.cards[1].definition}
-                    </p>
-                  </div>
+                {/* Definición */}
+                <div className="p-4 bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border border-gray-200">
+                  <h4 className="font-semibold text-gray-800 mb-2 text-center">
+                    📚 DEFINICIÓN
+                  </h4>
+                  <p className="text-gray-700 text-sm text-center leading-relaxed">
+                    {educationalContent.cards[0].definition}
+                  </p>
                 </div>
 
                 {/* Tip financiero */}
