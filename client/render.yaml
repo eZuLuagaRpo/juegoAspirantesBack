@@ -1,11 +1,8 @@
 services:
-  - type: web
+  - type: static
     name: juego-aspirantes-client
-    env: node
-    buildCommand: npm install && npm run build
-    startCommand: npm start
+    buildCommand: cd client && npm ci && npm run build
+    publishPath: client/dist
     envVars:
       - key: NODE_ENV
         value: production
-      - key: PORT
-        value: 10000

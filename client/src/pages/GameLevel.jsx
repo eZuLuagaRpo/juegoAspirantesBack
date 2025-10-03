@@ -6,8 +6,7 @@ import {
   Star, 
   Clock, 
   HelpCircle, 
-  Trophy,
-  Zap
+  Trophy
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import Phaser from 'phaser';
@@ -493,26 +492,6 @@ const GameLevel = () => {
   };
 
 
-  // Función para completar automáticamente el puzzle (solo para desarrollo)
-  const completePuzzleForTesting = () => {
-    if (process.env.NODE_ENV === 'production') {
-      toast.error('Esta función solo está disponible en modo desarrollo', {
-        duration: 3000,
-        icon: '🚫'
-      });
-      return;
-    }
-
-    toast.success('🧪 Completando puzzle automáticamente...', {
-      duration: 2000,
-      icon: '⚡'
-    });
-
-    // Simular un tiempo mínimo de juego
-    setTimeout(() => {
-      completePuzzle();
-    }, 1000);
-  };
 
   // Limpiar recursos al desmontar
   useEffect(() => {
@@ -684,16 +663,6 @@ const GameLevel = () => {
                   }`} />
                 </button>
 
-                {/* Botón de prueba - Solo visible en desarrollo */}
-                {process.env.NODE_ENV === 'development' && (
-                  <button
-                    onClick={completePuzzleForTesting}
-                    className="p-1.5 bg-yellow-100 hover:bg-yellow-200 rounded-md transition-colors border border-yellow-300"
-                    title="🧪 Completar puzzle automáticamente (solo desarrollo)"
-                  >
-                    <Zap className="w-3.5 h-3.5 text-yellow-600" />
-                  </button>
-                )}
               </div>
             </div>
           </div>
