@@ -2,6 +2,10 @@ const nodemailer = require('nodemailer');
 
 // Configuración del transporter de email con Gmail
 const createTransporter = () => {
+  console.log('🔧 Configurando transporter de email...');
+  console.log('📧 EMAIL_USER:', process.env.EMAIL_USER ? 'Configurado' : 'NO CONFIGURADO');
+  console.log('🔑 EMAIL_PASS:', process.env.EMAIL_PASS ? 'Configurado' : 'NO CONFIGURADO');
+  
   return nodemailer.createTransport({
     service: 'gmail',
     host: 'smtp.gmail.com',
@@ -13,7 +17,10 @@ const createTransporter = () => {
     },
     tls: {
       rejectUnauthorized: false
-    }
+    },
+    connectionTimeout: 10000, // 10 segundos
+    greetingTimeout: 10000,   // 10 segundos
+    socketTimeout: 10000      // 10 segundos
   });
 };
 
@@ -212,15 +219,29 @@ const createRewardEmailTemplate = (firstName, completionCode, rewardTitle, disco
 // Función para enviar email de recompensa
 const sendRewardEmail = async (email, firstName, completionCode, rewardTitle, discountPercentage) => {
   try {
+    console.log('📧 Iniciando envío de email...');
+    console.log('📧 Destinatario:', email);
+    console.log('👤 Nombre:', firstName);
+    console.log('🎁 Recompensa:', rewardTitle);
+    
     // Verificar que las credenciales estén configuradas
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.error('❌ Credenciales de email no configuradas');
       throw new Error('Credenciales de email no configuradas. Verifica EMAIL_USER y EMAIL_PASS en el archivo .env');
     }
 
+    console.log('🔧 Creando transporter...');
     const transporter = createTransporter();
     
-    // Verificar la conexión
-    await transporter.verify();
+    console.log('🔍 Verificando conexión SMTP...');
+    // Verificar la conexión con timeout
+    const verifyPromise = transporter.verify();
+    const timeoutPromise = new Promise((_, reject) => 
+      setTimeout(() => reject(new Error('Timeout verificando conexión SMTP')), 10000)
+    );
+    
+    await Promise.race([verifyPromise, timeoutPromise]);
+    console.log('✅ Conexión SMTP verificada');
 
     const mailOptions = {
       from: `"Juego Educativo USB Medellín" <${process.env.EMAIL_USER}>`,
@@ -245,12 +266,16 @@ const sendRewardEmail = async (email, firstName, completionCode, rewardTitle, di
       `
     };
 
+    console.log('📤 Enviando email...');
     const info = await transporter.sendMail(mailOptions);
+    console.log('✅ Email enviado exitosamente');
+    console.log('📧 Message ID:', info.messageId);
     
     return { success: true, messageId: info.messageId };
     
   } catch (error) {
     console.error('❌ Error enviando email:', error.message);
+    console.error('❌ Stack trace:', error.stack);
     return { success: false, error: error.message };
   }
 };
