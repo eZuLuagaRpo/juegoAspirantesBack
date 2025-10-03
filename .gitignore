@@ -10,6 +10,10 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+*.env
+neon-config.env
+secrets/
+credentials/
 
 # Build outputs
 dist/

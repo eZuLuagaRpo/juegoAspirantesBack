@@ -1,7 +1,7 @@
 services:
   - type: static
     name: juego-aspirantes-client
-    buildCommand: cd client && npm ci && npm run build
+    buildCommand: cd client && npm ci --include=dev && npm run build
     publishPath: client/dist
     envVars:
       - key: NODE_ENV
