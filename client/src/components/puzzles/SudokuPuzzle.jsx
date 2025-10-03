@@ -130,6 +130,8 @@ const SudokuPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) => {
 
   // Agregar event listener para el teclado
   useEffect(() => {
+    if (gameCompleted) return; // No agregar listener si el juego está completado
+    
     document.addEventListener('keydown', handleKeyPress);
     return () => {
       document.removeEventListener('keydown', handleKeyPress);
@@ -173,10 +175,12 @@ const SudokuPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) => {
     
     // Verificar si el movimiento es correcto
     if (num === solution[row][col]) {
-      // Verificar si el juego está completo
-      setTimeout(() => {
-        checkGameCompletion();
-      }, 100);
+      // Verificar si el juego está completo solo si no está ya completado
+      if (!gameCompleted) {
+        setTimeout(() => {
+          checkGameCompletion();
+        }, 100);
+      }
     } else {
       setErrors(prev => prev + 1);
       onError();
@@ -217,6 +221,9 @@ const SudokuPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) => {
 
   // Verificar si el juego está completo
   const checkGameCompletion = () => {
+    // Evitar verificación múltiple si ya está completado
+    if (gameCompleted) return;
+    
     for (let row = 0; row < 9; row++) {
       for (let col = 0; col < 9; col++) {
         if (grid[row][col] !== solution[row][col]) {
@@ -225,6 +232,7 @@ const SudokuPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) => {
       }
     }
     
+    // Marcar como completado y llamar onComplete solo una vez
     setGameCompleted(true);
     onComplete();
   };
@@ -233,7 +241,8 @@ const SudokuPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) => {
   // Exponer funciones al componente padre
   useImperativeHandle(ref, () => ({
     useHint: () => {
-      if (hintCount >= 3) {
+      // Evitar usar pistas si el juego ya está completado
+      if (hintCount >= 3 || gameCompleted) {
         return;
       }
 
@@ -264,13 +273,15 @@ const SudokuPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) => {
         setHintCount(prev => prev + 1);
         onHintUsed();
         
-        // Verificar si el juego está completo
-        setTimeout(() => {
-          checkGameCompletion();
-        }, 100);
+        // Verificar si el juego está completo solo si no está ya completado
+        if (!gameCompleted) {
+          setTimeout(() => {
+            checkGameCompletion();
+          }, 100);
+        }
       }, 1000);
     }
-  }), [grid, solution, hintCount, onHintUsed]);
+  }), [grid, solution, hintCount, onHintUsed, gameCompleted]);
 
   // Calcular progreso
   const filledCells = grid.flat().filter(cell => cell !== 0).length;
