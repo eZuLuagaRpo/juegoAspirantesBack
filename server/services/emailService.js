@@ -9,8 +9,8 @@ const createTransporter = () => {
   return nodemailer.createTransport({
     service: 'gmail',
     host: 'smtp.gmail.com',
-    port: 587,
-    secure: false, // true para 465, false para otros puertos
+    port: 465, // Puerto SSL
+    secure: true, // true para 465, false para otros puertos
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS
@@ -18,9 +18,9 @@ const createTransporter = () => {
     tls: {
       rejectUnauthorized: false
     },
-    connectionTimeout: 10000, // 10 segundos
-    greetingTimeout: 10000,   // 10 segundos
-    socketTimeout: 10000      // 10 segundos
+    connectionTimeout: 15000, // 15 segundos
+    greetingTimeout: 15000,   // 15 segundos
+    socketTimeout: 15000      // 15 segundos
   });
 };
 
