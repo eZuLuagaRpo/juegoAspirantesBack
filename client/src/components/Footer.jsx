@@ -37,6 +37,22 @@ const Footer = () => {
     {
       icon: <Phone className="w-5 h-5" />,
       text: '300 702 87 20'
+    },
+    {
+      icon: <Mail className="w-5 h-5" />,
+      text: 'Pregrado: mercadeo@usbmed.edu.co'
+    },
+    {
+      icon: <Mail className="w-5 h-5" />,
+      text: 'mercadeo1@usbmed.edu.co'
+    },
+    {
+      icon: <Mail className="w-5 h-5" />,
+      text: 'asistente.mercadeo1@usbmed.edu.co'
+    },
+    {
+      icon: <Mail className="w-5 h-5" />,
+      text: 'Posgrado: mercadeo.posgrados@usbmed.edu.co'
     }
   ];
 
