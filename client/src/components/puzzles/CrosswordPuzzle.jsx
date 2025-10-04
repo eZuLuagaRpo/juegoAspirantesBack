@@ -17,6 +17,7 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
   const [currentClue, setCurrentClue] = useState(null);
   const [writingMode, setWritingMode] = useState(false); // Modo de escritura activo
   const [completedWords, setCompletedWords] = useState(new Set()); // Palabras completadas y bloqueadas
+  const [sequentialWriting, setSequentialWriting] = useState(true); // true = secuencial, false = libre
 
   // Banco de contenido académico
   const academicContent = {
@@ -217,11 +218,8 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
         [clueKey]: updatedAnswer
       }));
 
-      // Verificar si la palabra está completa (todas las posiciones tienen letras)
-      const isComplete = updatedAnswer.length === clue.length && !updatedAnswer.includes('');
-      
-      if (isComplete) {
-        // Validar solo cuando la palabra esté completamente llena
+      // Verificar si la palabra está completa y es correcta
+      if (updatedAnswer.length === clue.length) {
         if (updatedAnswer === clue.word) {
           // Palabra correcta - BLOQUEARLA
           setCompletedWords(prev => {
@@ -271,9 +269,11 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
             duration: 2000
           });
         }
-      } else {
-        // Si no está completa, solo mostrar feedback positivo sin validar
-        // No mover automáticamente - permitir que el usuario navegue libremente
+      }
+
+      // Mover automáticamente SOLO si estamos en modo secuencial
+      if (sequentialWriting) {
+        moveToNextCellInCurrentWord(clue, letterIndex);
       }
     }
   };
@@ -347,6 +347,9 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
   const handleBackspace = () => {
     if (!selectedCell || gameCompleted || !currentClue) return;
     
+    // Cambiar a modo libre cuando se use Backspace
+    setSequentialWriting(false);
+    
     // Verificar si la palabra actual ya está completada y bloqueada
     const clueKey = `${currentClue.number}-${currentClue.direction}`;
     if (completedWords.has(clueKey)) {
@@ -387,6 +390,9 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
   // Navegar con flechas
   const navigateWithArrows = (direction) => {
     if (!selectedCell || !currentClue || !writingMode) return;
+    
+    // Cambiar a modo libre cuando se usen flechas
+    setSequentialWriting(false);
     
     const { row, col } = selectedCell;
     let newRow = row;
@@ -574,9 +580,9 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
         type: 'instructions',
         instructions: [
           'Haz clic en una celda para comenzar a escribir una palabra',
-          'Puedes escribir letra por letra en cualquier orden',
-          'La validación ocurre solo al completar la última letra',
-          'Usa las flechas para navegar y Backspace para borrar',
+          'Escritura secuencial: Se mueve automáticamente entre celdas',
+          'Escritura libre: Usa flechas para navegar y Backspace para borrar',
+          'La validación ocurre al completar la palabra',
           'Cada palabra correcta muestra una curiosidad académica'
         ]
       },
@@ -668,8 +674,27 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
                 {/* Instrucciones de teclado - MOVIDAS ARRIBA */}
                 <div className="text-center text-gray-600 text-sm mb-4">
                   <p>Usa las teclas del alfabeto para ingresar letras.</p>
-                  <p>Puedes escribir letra por letra en cualquier orden.</p>
-                  <p>Usa las flechas para navegar y Backspace para borrar.</p>
+                  <div className="flex justify-center items-center space-x-4 mt-2">
+                    <div className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      sequentialWriting 
+                        ? 'bg-blue-100 text-blue-800 border border-blue-300' 
+                        : 'bg-gray-100 text-gray-600 border border-gray-300'
+                    }`}>
+                      {sequentialWriting ? '📝 Secuencial' : '🎯 Libre'}
+                    </div>
+                    <button
+                      onClick={() => setSequentialWriting(!sequentialWriting)}
+                      className="text-xs text-blue-600 hover:text-blue-800 underline"
+                    >
+                      Cambiar modo
+                    </button>
+                  </div>
+                  <p className="mt-2 text-xs">
+                    {sequentialWriting 
+                      ? 'Se mueve automáticamente entre celdas' 
+                      : 'Usa las flechas para navegar y Backspace para borrar'
+                    }
+                  </p>
                   {currentClue && writingMode && (
                     <p className="mt-2 text-blue-600 font-semibold">
                       Palabra {currentClue.number}: {currentClue.direction === 'across' ? '→' : '↓'} {currentClue.definition}
