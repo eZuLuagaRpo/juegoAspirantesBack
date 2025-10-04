@@ -48,8 +48,8 @@ CREATE TABLE game_levels (
 INSERT INTO game_levels (id, name, description, order_number) VALUES
 ('mercadeo', 'Mercadeo', 'Conoce las opciones de financiación y becas', 1),
 ('registroAcademico', 'Registro Académico', 'Aprende sobre el proceso de inscripción', 2),
-('bienestar', 'Bienestar Institucional', 'Descubre los servicios de bienestar', 3),
-('facultades', 'Facultades', 'Conoce las facultades y programas', 4),
+('bienestar', 'Bienestar Institucional', 'Descubre los servicios de bienestar', 4),
+('facultades', 'Facultades', 'Conoce las facultades y programas', 3),
 ('cartera', 'Cartera', 'Entiende los aspectos financieros', 5);
 
 -- =====================================================

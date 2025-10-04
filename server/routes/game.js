@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { body, validationResult } = require('express-validator');
 
-// Datos de los niveles del juego (orden: mercadeo, registro, bienestar, facultades, cartera)
+// Datos de los niveles del juego (orden: mercadeo, registro, facultades, bienestar, cartera)
 const gameLevels = {
   mercadeo: {
     id: 'mercadeo',
@@ -124,11 +124,79 @@ const gameLevels = {
       }
     ]
   },
+  facultades: {
+    id: 'facultades',
+    name: 'Facultades',
+    description: 'Explora las diferentes facultades y programas',
+    order: 3,
+    puzzles: [
+      {
+        id: 'facultades_1',
+        type: 'crossword',
+        title: 'Crucigrama Académico Interactivo',
+        description: 'Completa el crucigrama con términos de facultades, carreras y conceptos académicos',
+        difficulty: 3,
+        maxStars: 5,
+        puzzleData: {
+          gridSize: 15,
+          wordCount: 10,
+          categories: [
+            {
+              name: 'Facultades',
+              words: ['INGENIERIA', 'EDUCACION', 'ARQUITECTURA'],
+              definitions: [
+                'Facultad que forma profesionales en ciencias aplicadas',
+                'Facultad que forma maestros y pedagogos',
+                'Arte y técnica de diseñar edificios'
+              ]
+            },
+            {
+              name: 'Profesiones',
+              words: ['ABOGADO', 'CONTADOR', 'ARQUITECTO'],
+              definitions: [
+                'Profesional experto en leyes y defensa legal',
+                'Experto en finanzas y contabilidad',
+                'Diseñador de espacios y edificaciones'
+              ]
+            },
+            {
+              name: 'Asignaturas',
+              words: ['CALCULO', 'FISICA', 'HISTORIA'],
+              definitions: [
+                'Matemática avanzada con derivadas e integrales',
+                'Ciencia que estudia la materia y energía',
+                'Estudio de eventos del pasado humano'
+              ]
+            },
+            {
+              name: 'Conceptos Académicos',
+              words: ['SEMESTRE'],
+              definitions: [
+                'Período académico de seis meses'
+              ]
+            }
+          ],
+          timeLimit: 600, // 10 minutos
+          hintsAvailable: 3,
+          curiosities: [
+            '¿Sabías que Ingeniería viene del latín "ingenium" (ingenio)?',
+            'La Facultad de Medicina más antigua de América está en México (1551)',
+            'Los primeros médicos especializados aparecieron en el Antiguo Egipto',
+            'La profesión de contador existe desde hace más de 7,000 años',
+            'El término "arquitecto" significa "constructor jefe" en griego',
+            'El cálculo fue inventado independientemente por Newton y Leibniz',
+            'La física estudia desde partículas subatómicas hasta galaxias',
+            'El sistema semestral se originó en las universidades alemanas del siglo XIX'
+          ]
+        }
+      }
+    ]
+  },
   bienestar: {
     id: 'bienestar',
     name: 'Bienestar',
     description: 'Descubre los servicios de bienestar universitario',
-    order: 3,
+    order: 4,
     puzzles: [
       {
         id: 'bienestar_1',
@@ -202,74 +270,6 @@ const gameLevels = {
           timeLimit: 300, // 5 minutos
           hintsAvailable: 3,
           totalAssociations: 15
-        }
-      }
-    ]
-  },
-  facultades: {
-    id: 'facultades',
-    name: 'Facultades',
-    description: 'Explora las diferentes facultades y programas',
-    order: 4,
-    puzzles: [
-      {
-        id: 'facultades_1',
-        type: 'crossword',
-        title: 'Crucigrama Académico Interactivo',
-        description: 'Completa el crucigrama con términos de facultades, carreras y conceptos académicos',
-        difficulty: 3,
-        maxStars: 5,
-        puzzleData: {
-          gridSize: 15,
-          wordCount: 10,
-          categories: [
-            {
-              name: 'Facultades',
-              words: ['INGENIERIA', 'EDUCACION', 'ARQUITECTURA'],
-              definitions: [
-                'Facultad que forma profesionales en ciencias aplicadas',
-                'Facultad que forma maestros y pedagogos',
-                'Arte y técnica de diseñar edificios'
-              ]
-            },
-            {
-              name: 'Profesiones',
-              words: ['ABOGADO', 'CONTADOR', 'ARQUITECTO'],
-              definitions: [
-                'Profesional experto en leyes y defensa legal',
-                'Experto en finanzas y contabilidad',
-                'Diseñador de espacios y edificaciones'
-              ]
-            },
-            {
-              name: 'Asignaturas',
-              words: ['CALCULO', 'FISICA', 'HISTORIA'],
-              definitions: [
-                'Matemática avanzada con derivadas e integrales',
-                'Ciencia que estudia la materia y energía',
-                'Estudio de eventos del pasado humano'
-              ]
-            },
-            {
-              name: 'Conceptos Académicos',
-              words: ['SEMESTRE'],
-              definitions: [
-                'Período académico de seis meses'
-              ]
-            }
-          ],
-          timeLimit: 600, // 10 minutos
-          hintsAvailable: 3,
-          curiosities: [
-            '¿Sabías que Ingeniería viene del latín "ingenium" (ingenio)?',
-            'La Facultad de Medicina más antigua de América está en México (1551)',
-            'Los primeros médicos especializados aparecieron en el Antiguo Egipto',
-            'La profesión de contador existe desde hace más de 7,000 años',
-            'El término "arquitecto" significa "constructor jefe" en griego',
-            'El cálculo fue inventado independientemente por Newton y Leibniz',
-            'La física estudia desde partículas subatómicas hasta galaxias',
-            'El sistema semestral se originó en las universidades alemanas del siglo XIX'
-          ]
         }
       }
     ]
