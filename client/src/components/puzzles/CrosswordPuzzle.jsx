@@ -199,27 +199,57 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
     
     const { row, col } = selectedCell;
     const clue = currentClue;
-    const currentAnswer = userAnswers[clueKey] || '';
     const letterIndex = clue.direction === 'across' ? col - clue.col : row - clue.row;
     
     if (letterIndex >= 0 && letterIndex < clue.length) {
-      // Crear array con la longitud completa de la palabra, rellenando con espacios si es necesario
-      const answerArray = currentAnswer.split('');
-      while (answerArray.length < clue.length) {
-        answerArray.push('');
+      // Obtener la respuesta actual (puede ser un objeto con posiciones o una cadena)
+      const currentAnswer = userAnswers[clueKey] || {};
+      
+      // Crear array con la longitud completa de la palabra
+      const answerArray = [];
+      for (let i = 0; i < clue.length; i++) {
+        answerArray[i] = '';
+      }
+      
+      // Si hay una respuesta existente, llenar el array
+      if (typeof currentAnswer === 'string') {
+        // Respuesta antigua en formato cadena - convertir
+        const existingLetters = currentAnswer.split('');
+        for (let i = 0; i < Math.min(existingLetters.length, clue.length); i++) {
+          if (existingLetters[i]) {
+            answerArray[i] = existingLetters[i];
+          }
+        }
+      } else {
+        // Respuesta en formato objeto con posiciones
+        for (let i = 0; i < clue.length; i++) {
+          answerArray[i] = currentAnswer[i] || '';
+        }
       }
       
       // Insertar la letra en la posición específica
       answerArray[letterIndex] = letter.toUpperCase();
+      
+      // Crear la cadena de respuesta para validación
       const updatedAnswer = answerArray.join('');
+      
+      // Crear objeto con posiciones para almacenar
+      const answerObject = {};
+      for (let i = 0; i < clue.length; i++) {
+        if (answerArray[i]) {
+          answerObject[i] = answerArray[i];
+        }
+      }
       
       setUserAnswers(prev => ({
         ...prev,
-        [clueKey]: updatedAnswer
+        [clueKey]: answerObject
       }));
 
-      // Verificar si la palabra está completa y es correcta
-      if (updatedAnswer.length === clue.length) {
+      // Verificar si la palabra está completa (todas las posiciones tienen letras)
+      const isComplete = answerArray.every(letter => letter !== '');
+      
+      if (isComplete) {
         if (updatedAnswer === clue.word) {
           // Palabra correcta - BLOQUEARLA
           setCompletedWords(prev => {
@@ -332,12 +362,8 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
     else if (key === 'BACKSPACE') {
       handleBackspace();
     }
-    // Teclas de flecha para navegar
-    else if (key === 'ARROWUP' || key === 'ARROWDOWN' || key === 'ARROWLEFT' || key === 'ARROWRIGHT') {
-      navigateWithArrows(key);
-    }
-    // Bloquear cualquier otra tecla no permitida
-    else if (blockedKeys.includes(key)) {
+    // Bloquear cualquier otra tecla no permitida (incluyendo flechas)
+    else if (blockedKeys.includes(key) || key === 'ARROWUP' || key === 'ARROWDOWN' || key === 'ARROWLEFT' || key === 'ARROWRIGHT') {
       event.preventDefault();
       return;
     }
@@ -366,79 +392,23 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
     
     const { row, col } = selectedCell;
     const clue = currentClue;
-    const currentAnswer = userAnswers[clueKey] || '';
+    const currentAnswer = userAnswers[clueKey] || {};
     const letterIndex = clue.direction === 'across' ? col - clue.col : row - clue.row;
     
-    if (letterIndex >= 0 && letterIndex < clue.length && currentAnswer.length > letterIndex) {
-      // Crear array con la longitud completa de la palabra, rellenando con espacios si es necesario
-      const answerArray = currentAnswer.split('');
-      while (answerArray.length < clue.length) {
-        answerArray.push('');
-      }
+    if (letterIndex >= 0 && letterIndex < clue.length && currentAnswer[letterIndex]) {
+      // Crear objeto con las letras existentes
+      const answerObject = { ...currentAnswer };
       
       // Borrar la letra en la posición específica
-      answerArray[letterIndex] = '';
-      const updatedAnswer = answerArray.join('');
+      delete answerObject[letterIndex];
       
       setUserAnswers(prev => ({
         ...prev,
-        [clueKey]: updatedAnswer
+        [clueKey]: answerObject
       }));
     }
   };
 
-  // Navegar con flechas
-  const navigateWithArrows = (direction) => {
-    if (!selectedCell || !currentClue || !writingMode) return;
-    
-    // Cambiar a modo libre cuando se usen flechas
-    setSequentialWriting(false);
-    
-    const { row, col } = selectedCell;
-    let newRow = row;
-    let newCol = col;
-    
-    // Navegar dentro de la palabra actual manteniendo la dirección
-    if (currentClue.direction === 'across') {
-      switch (direction) {
-        case 'ARROWLEFT':
-          newCol = Math.max(currentClue.col, col - 1);
-          break;
-        case 'ARROWRIGHT':
-          newCol = Math.min(currentClue.col + currentClue.length - 1, col + 1);
-          break;
-        case 'ARROWUP':
-        case 'ARROWDOWN':
-          // No cambiar de celda en dirección vertical para palabras horizontales
-          return;
-      }
-    } else {
-      switch (direction) {
-        case 'ARROWUP':
-          newRow = Math.max(currentClue.row, row - 1);
-          break;
-        case 'ARROWDOWN':
-          newRow = Math.min(currentClue.row + currentClue.length - 1, row + 1);
-          break;
-        case 'ARROWLEFT':
-        case 'ARROWRIGHT':
-          // No cambiar de celda en dirección horizontal para palabras verticales
-          return;
-      }
-    }
-    
-    // Verificar que la nueva posición esté dentro de la palabra actual
-    // Usar la pista actual en lugar de buscar una nueva
-    if (currentClue.direction === 'across') {
-      if (newCol >= currentClue.col && newCol < currentClue.col + currentClue.length) {
-        setSelectedCell({ row: newRow, col: newCol });
-      }
-    } else {
-      if (newRow >= currentClue.row && newRow < currentClue.row + currentClue.length) {
-        setSelectedCell({ row: newRow, col: newCol });
-      }
-    }
-  };
 
   // Verificar si el juego está completo
   const checkGameCompletion = useCallback(() => {
@@ -581,8 +551,8 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
         instructions: [
           'Haz clic en una celda para comenzar a escribir una palabra',
           'Escritura secuencial: Se mueve automáticamente entre celdas',
-          'Escritura libre: Usa flechas para navegar y Backspace para borrar',
-          'La validación ocurre al completar la palabra',
+          'Escritura libre: Haz clic en cualquier casilla para escribir ahí',
+          'La validación ocurre al completar todas las letras de la palabra',
           'Cada palabra correcta muestra una curiosidad académica'
         ]
       },
@@ -692,7 +662,7 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
                   <p className="mt-2 text-xs">
                     {sequentialWriting 
                       ? 'Se mueve automáticamente entre celdas' 
-                      : 'Usa las flechas para navegar y Backspace para borrar'
+                      : 'Haz clic en cualquier casilla para escribir ahí'
                     }
                   </p>
                   {currentClue && writingMode && (
@@ -715,7 +685,7 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
                       const hasLetter = cell !== '';
                       const clue = findClueForCell(rowIndex, colIndex);
                       const clueKey = clue ? `${clue.number}-${clue.direction}` : null;
-                      const userAnswer = clueKey ? userAnswers[clueKey] || '' : '';
+                      const userAnswer = clueKey ? userAnswers[clueKey] || {} : {};
                       const letterIndex = clue ? (clue.direction === 'across' ? colIndex - clue.col : rowIndex - clue.row) : -1;
                       const userLetter = userAnswer[letterIndex] || '';
                       
