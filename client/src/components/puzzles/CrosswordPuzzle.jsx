@@ -227,6 +227,42 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
         }
       }
       
+      // IMPORTANTE: Buscar letras de cruces para completar el array
+      // Esto permite que las letras de otras palabras completadas se usen en esta palabra
+      for (let i = 0; i < clue.length; i++) {
+        if (!answerArray[i]) {
+          // Calcular la posición en la grilla para esta letra
+          const cellRow = clue.direction === 'across' ? clue.row : clue.row + i;
+          const cellCol = clue.direction === 'across' ? clue.col + i : clue.col;
+          
+          // Buscar todas las palabras que cruzan en esta celda
+          const crossingClues = clues.filter(c => {
+            if (c.number === clue.number && c.direction === clue.direction) {
+              return false; // No buscar en la misma palabra
+            }
+            if (c.direction === 'across') {
+              return c.row === cellRow && cellCol >= c.col && cellCol < c.col + c.length;
+            } else {
+              return c.col === cellCol && cellRow >= c.row && cellRow < c.row + c.length;
+            }
+          });
+          
+          // Buscar la primera letra disponible de cualquier palabra que cruce
+          for (const crossClue of crossingClues) {
+            const crossClueKey = `${crossClue.number}-${crossClue.direction}`;
+            const crossAnswer = userAnswers[crossClueKey] || {};
+            const crossLetterIndex = crossClue.direction === 'across' 
+              ? cellCol - crossClue.col 
+              : cellRow - crossClue.row;
+            
+            if (crossAnswer[crossLetterIndex]) {
+              answerArray[i] = crossAnswer[crossLetterIndex];
+              break;
+            }
+          }
+        }
+      }
+      
       // Insertar la letra en la posición específica
       answerArray[letterIndex] = letter.toUpperCase();
       
@@ -343,28 +379,60 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
     
     const key = event.key.toUpperCase();
     
-    // Lista de teclas especiales a bloquear
+    // Lista completa de teclas especiales a bloquear
     const blockedKeys = [
-      'SHIFT', 'CONTROL', 'ALT', 'META', 'CAPSLOCK', 'TAB', 'ENTER', 'ESCAPE',
+      // Teclas modificadoras
+      'SHIFT', 'CONTROL', 'ALT', 'ALTGRAPH', 'META', 'CAPSLOCK',
+      // Teclas de navegación y control
+      'TAB', 'ENTER', 'ESCAPE', 'SPACE', 'DELETE',
+      'ARROWUP', 'ARROWDOWN', 'ARROWLEFT', 'ARROWRIGHT',
+      'PAGEUP', 'PAGEDOWN', 'HOME', 'END', 'INSERT',
+      // Teclas de función
       'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
-      'SPACE', 'PAGEUP', 'PAGEDOWN', 'HOME', 'END', 'INSERT', 'NUMLOCK',
-      'SCROLLLOCK', 'PAUSE', 'CONTEXTMENU', 'PRINTSCREEN', 'DELETE'
+      'F13', 'F14', 'F15', 'F16', 'F17', 'F18', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24',
+      // Teclas de bloqueo
+      'NUMLOCK', 'SCROLLLOCK', 'PAUSE',
+      // Otras teclas especiales
+      'CONTEXTMENU', 'PRINTSCREEN', 'PRINT',
+      // Teclas del teclado numérico (cuando NumLock está desactivado)
+      'CLEAR', 'SELECT', 'EXECUTE', 'HELP',
+      // Teclas multimedia
+      'VOLUMEUP', 'VOLUMEDOWN', 'VOLUMEMUTE',
+      'MEDIANEXTTRACK', 'MEDIAPREVIOUSTRACK', 'MEDIASTOP', 'MEDIAPLAYPAUSE',
+      // Teclas de navegador
+      'BROWSERBACK', 'BROWSERFORWARD', 'BROWSERREFRESH', 'BROWSERSTOP',
+      'BROWSERSEARCH', 'BROWSERFAVORITES', 'BROWSERHOME',
+      // Teclas de aplicación
+      'LAUNCHMAIL', 'LAUNCHAPP1', 'LAUNCHAPP2',
+      // Windows/OS specific
+      'OS', 'WIN', 'FNLOCK', 'FN', 'HYPER', 'SUPER',
+      // Teclas de edición especiales
+      'COPY', 'CUT', 'PASTE', 'UNDO', 'REDO', 'FIND', 'AGAIN',
+      // Teclas de proceso
+      'PROCESS', 'ATTN', 'CRSEL', 'EXSEL',
+      // Teclas adicionales
+      'PROPS', 'CANCEL', 'CLEAR', 'ACCEPT', 'MODECHANGE', 'NONCONVERT', 'CONVERT',
+      'KANAMODE', 'HANGULMODE', 'HANJAMODE', 'JUNJAMODE', 'FINALMODE',
+      // Dead keys (teclas muertas para acentos)
+      'DEAD', 'COMPOSE', 'ALPHANUMERIC',
+      // Otras variantes
+      'SHIFTLEFT', 'SHIFTRIGHT', 'CONTROLLEFT', 'CONTROLRIGHT',
+      'ALTLEFT', 'ALTRIGHT', 'METALEFT', 'METARIGHT'
     ];
     
     // Prevenir comportamiento por defecto del navegador para todas las teclas
     event.preventDefault();
     
-    // Letras del alfabeto
+    // SOLO permitir letras del alfabeto y Backspace
     if (key >= 'A' && key <= 'Z') {
       handleLetterInput(key);
     }
-    // Tecla Backspace para borrar
     else if (key === 'BACKSPACE') {
       handleBackspace();
     }
-    // Bloquear cualquier otra tecla no permitida (incluyendo flechas)
-    else if (blockedKeys.includes(key) || key === 'ARROWUP' || key === 'ARROWDOWN' || key === 'ARROWLEFT' || key === 'ARROWRIGHT') {
-      event.preventDefault();
+    // Bloquear todo lo demás
+    else {
+      // No hacer nada, simplemente ignorar la tecla
       return;
     }
   };
@@ -557,7 +625,6 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
         instructions: [
           'Haz clic en una celda para comenzar a escribir una palabra',
           'Escritura secuencial: Se mueve automáticamente entre celdas',
-          'Escritura libre: Haz clic en cualquier casilla para escribir ahí',
           'La validación ocurre al completar todas las letras de la palabra',
           'Cada palabra correcta muestra una curiosidad académica'
         ]
@@ -650,21 +717,7 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
                 {/* Instrucciones de teclado - MOVIDAS ARRIBA */}
                 <div className="text-center text-gray-600 text-sm mb-4">
                   <p>Usa las teclas del alfabeto para ingresar letras.</p>
-                  <div className="flex justify-center items-center space-x-4 mt-2">
-                    <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      sequentialWriting 
-                        ? 'bg-blue-100 text-blue-800 border border-blue-300' 
-                        : 'bg-gray-100 text-gray-600 border border-gray-300'
-                    }`}>
-                      {sequentialWriting ? '📝 Secuencial' : '🎯 Libre'}
-                    </div>
-                    <button
-                      onClick={() => setSequentialWriting(!sequentialWriting)}
-                      className="text-xs text-blue-600 hover:text-blue-800 underline"
-                    >
-                      Cambiar modo
-                    </button>
-                  </div>
+                  
                   <p className="mt-2 text-xs">
                     {sequentialWriting 
                       ? 'Se mueve automáticamente entre celdas' 
