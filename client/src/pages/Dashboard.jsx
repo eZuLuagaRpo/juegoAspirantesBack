@@ -108,7 +108,6 @@ const Dashboard = () => {
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (loading && (!levels || levels.length === 0)) {
-        console.warn('Timeout de carga detectado, forzando finalización del loading');
         setLoadingTimeout(true);
         toast.error('La carga está tardando más de lo esperado. Recarga la página si el problema persiste.', {
           duration: 5000,
@@ -198,7 +197,6 @@ const Dashboard = () => {
         }
       }
     } catch (error) {
-      console.error('Error marcando primer login como completado:', error);
       // Aún así, actualizar el estado local para evitar que el modal aparezca
       updateUser({ isFirstLogin: false });
     }

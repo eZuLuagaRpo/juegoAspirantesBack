@@ -17,11 +17,9 @@ const retryWithBackoff = async (fn, maxRetries = 3, baseDelay = 2000) => {
       if (error.response?.status === 429) {
         if (i < maxRetries - 1) {
           const delay = baseDelay * Math.pow(2, i) + Math.random() * 1000; // Agregar jitter
-          console.warn(`Rate limited. Reintentando en ${delay}ms...`);
           await new Promise(resolve => setTimeout(resolve, delay));
           continue;
         } else {
-          console.error('Demasiados reintentos. Abortando...');
           throw error;
         }
       }
@@ -80,7 +78,6 @@ export const GameProvider = ({ children }) => {
   useEffect(() => {
     const safetyTimeout = setTimeout(() => {
       if (levels.length === 0 && !loading) {
-        console.warn('No se pudieron cargar los niveles, intentando recarga automática');
         loadGameLevels();
       }
     }, 20000); // 20 segundos
@@ -121,7 +118,6 @@ export const GameProvider = ({ children }) => {
         throw new Error('No se pudo cargar el progreso');
       }
     } catch (error) {
-      console.warn('Error cargando progreso del usuario, usando valores por defecto:', error.message);
       // Si no hay progreso, crear uno nuevo
       const defaultProgress = {
         userId,
@@ -154,7 +150,6 @@ export const GameProvider = ({ children }) => {
       });
       setRewards(response.data.data);
     } catch (error) {
-      console.warn('Error cargando recompensas del usuario, usando valores por defecto:', error.message);
       setRewards({
         userId,
         virtualRewards: [],
@@ -394,7 +389,6 @@ export const GameProvider = ({ children }) => {
       });
       return response.data.data;
     } catch (error) {
-      console.warn('Error cargando estadísticas del usuario:', error.message);
       return null;
     } finally {
       requestQueueRef.current.delete(`stats-${userId}`);
@@ -417,7 +411,6 @@ export const GameProvider = ({ children }) => {
       });
       return response.data.data;
     } catch (error) {
-      console.warn('Error cargando estadísticas de recompensas:', error.message);
       return null;
     } finally {
       requestQueueRef.current.delete(`reward-stats-${userId}`);
@@ -446,7 +439,6 @@ export const GameProvider = ({ children }) => {
       
       return response.data.data.stars;
     } catch (error) {
-      console.warn('Error calculando estrellas:', error.message);
       return 0;
     } finally {
       requestQueueRef.current.delete(`calculate-stars-${puzzleId}`);
@@ -499,7 +491,6 @@ export const GameProvider = ({ children }) => {
       });
       return response.data;
     } catch (error) {
-      console.warn('Error obteniendo siguiente puzzle:', error.message);
       return { success: false, error: error.message };
     } finally {
       requestQueueRef.current.delete(`next-puzzle-${levelId}`);

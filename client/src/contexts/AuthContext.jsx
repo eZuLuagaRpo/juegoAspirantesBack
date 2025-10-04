@@ -48,10 +48,8 @@ export const AuthProvider = ({ children }) => {
       
       // Error de autenticación - hacer logout
       if (error.response?.status === 401) {
-        console.warn('Token inválido o expirado, limpiando sesión');
         logout();
       } else {
-        console.error('Error verificando token:', error.message);
         setLoading(false);
       }
     } finally {

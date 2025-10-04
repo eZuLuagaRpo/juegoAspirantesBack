@@ -57,14 +57,12 @@ export const useGameCompletion = () => {
       
       // Verificar si la respuesta es exitosa
       if (!response.ok) {
-        console.warn(`⚠️ API /completion respondió con status ${response.status}`);
         return false;
       }
       
       // Verificar si la respuesta es JSON
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
-        console.warn('⚠️ API /completion no devolvió JSON');
         return false;
       }
       
@@ -99,7 +97,6 @@ export const useGameCompletion = () => {
         return false;
       }
     } catch (error) {
-      console.error('Error verificando estado de finalización:', error);
       setGameAlreadyCompleted(false);
       return false;
     }
@@ -149,7 +146,6 @@ export const useGameCompletion = () => {
         });
         return { success: true, firstTime: true };
       } else {
-        console.error('❌ Error enviando datos automáticamente a Google Sheets:', result.error);
         toast.error(`Error registrando datos: ${result.error}. Tu código sigue siendo válido.`, {
           duration: 5000,
           icon: '⚠️'
@@ -157,7 +153,6 @@ export const useGameCompletion = () => {
         return { success: false, error: result.error };
       }
     } catch (error) {
-      console.error('❌ Error en envío automático a Google Sheets:', error);
       toast.error('Error registrando datos, pero tu código sigue siendo válido.', {
         duration: 5000,
         icon: '⚠️'
@@ -172,37 +167,25 @@ export const useGameCompletion = () => {
   // Mostrar modal de recompensa cuando se complete el juego
   const handleGameCompletion = () => {
     if (!user || !userProgress) {
-      console.warn('⚠️ handleGameCompletion: Usuario o progreso no disponible');
       return;
     }
 
-    console.log('🎉 ¡Juego completado! Generando código de recompensa...');
-    console.log('📊 Estrellas totales:', userProgress.totalStars);
-
     // Obtener información de la recompensa
     const reward = getRewardInfo(userProgress.totalStars);
-    console.log('🎁 Recompensa obtenida:', reward);
     setRewardData(reward);
 
     // Generar código único
     const timestamp = Date.now();
     const code = generateCompletionCode(user.id, timestamp);
-    console.log('🔑 Código generado:', code);
     setCompletionCode(code);
 
     // Mostrar modal de código directamente (sin modal de recompensa intermedio)
-    console.log('📱 Abriendo modal de código...');
     setShowCodeModal(true);
   };
 
   // Reclamar recompensa y enviar a Google Sheets (SOLO cuando se hace clic en el botón)
   const handleClaimFinalReward = async () => {
     if (!user || !rewardData || !completionCode) {
-      console.error('❌ No se puede reclamar recompensa: datos faltantes', {
-        user: !!user,
-        rewardData: !!rewardData,
-        completionCode: !!completionCode
-      });
       return;
     }
 
@@ -215,7 +198,6 @@ export const useGameCompletion = () => {
       // El modal ya está abierto, no necesitamos cerrar/abrir modales
 
     } catch (error) {
-      console.error('Error reclamando recompensa:', error);
       toast.error('Error generando código de recompensa');
     } finally {
       setIsClaiming(false);

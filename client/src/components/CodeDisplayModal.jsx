@@ -22,7 +22,6 @@ const CodeDisplayModal = ({ isOpen, onClose, user, reward, completionCode, onLog
       await navigator.clipboard.writeText(completionCode);
       toast.success('¡Código copiado al portapapeles!');
     } catch (error) {
-      console.error('Error copiando código:', error);
       toast.error('Error al copiar el código');
     } finally {
       setIsCopying(false);
@@ -63,7 +62,6 @@ const CodeDisplayModal = ({ isOpen, onClose, user, reward, completionCode, onLog
         throw new Error(data.error || 'Error enviando email');
       }
     } catch (error) {
-      console.error('Error enviando email:', error);
       toast.error('Error al enviar el email. Intenta de nuevo.', {
         duration: 4000,
         icon: '❌',
