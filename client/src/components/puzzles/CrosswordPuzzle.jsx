@@ -445,9 +445,6 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
   const handleBackspace = () => {
     if (!selectedCell || gameCompleted || !currentClue) return;
     
-    // Cambiar a modo libre cuando se use Backspace
-    setSequentialWriting(false);
-    
     // Verificar si la palabra actual ya está completada y bloqueada
     const clueKey = `${currentClue.number}-${currentClue.direction}`;
     if (completedWords.has(clueKey)) {

@@ -164,19 +164,25 @@ const SequentialPuzzle = forwardRef(({
     if (!draggedCard) return;
 
     const newDropZones = [...dropZones];
-    const wasInDropZone = dropZones.some(zone => zone && zone.id === draggedCard.id);
     
-    // Si ya hay una tarjeta en esta posición, devolverla a la zona de mezcladas
+    // Buscar si la tarjeta arrastrada ya estaba en alguna zona de drop
+    const previousDropIndex = dropZones.findIndex(zone => zone && zone.id === draggedCard.id);
+    const wasInDropZone = previousDropIndex !== -1;
+    
+    // Si ya hay una tarjeta en la posición destino, devolverla a la zona de mezcladas
     if (newDropZones[dropIndex]) {
       setShuffledCards(prev => [...prev, newDropZones[dropIndex]]);
     }
     
-    // Remover tarjeta de la zona de mezcladas ANTES de colocarla en la nueva posición
-    // Solo si no estaba ya en una zona de drop
-    if (!wasInDropZone) {
+    // Si la tarjeta estaba en una zona de drop, removerla de ahí
+    if (wasInDropZone) {
+      newDropZones[previousDropIndex] = null;
+    } else {
+      // Si venía de la zona de mezcladas, removerla de ahí
       setShuffledCards(prev => prev.filter(card => card.id !== draggedCard.id));
     }
     
+    // Colocar la tarjeta en la nueva posición
     newDropZones[dropIndex] = draggedCard;
     setDropZones(newDropZones);
 
