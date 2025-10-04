@@ -979,7 +979,11 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
       {
         title: '🎯 ¡El inicio de tu aventura universitaria!',
         type: 'text',
-        content: 'En esta unidad nos encargamos de mostrarte todo lo que la USB tiene para ofrecerte. A través de campañas, eventos y actividades, te damos toda la información para que tomes la mejor decisión, es decir, ¡elegirnos! En todo momento de tu ingreso, respondemos todas tus preguntas y te guiamos para que descubras el programa perfecto para ti. ¡Prepárate para ser parte de algo increíble!'
+        content: 'En esta unidad nos encargamos de mostrarte todo lo que la USB tiene para ofrecerte. A través de campañas, eventos y actividades; te damos toda la información para que tomes la mejor decisión. es decir, ¡ELEGIRNOS!.'
+      },
+      {
+        type: 'text',
+        content: 'En el momento de tu ingreso, respondemos todas tus preguntas y te guiamos para que descubras el programa perfecto para ti. ¡Prepárate para ser parte de algo increíble!'
       },
       {
         title: '🌟 ¿Qué hacemos en Mercadeo?',

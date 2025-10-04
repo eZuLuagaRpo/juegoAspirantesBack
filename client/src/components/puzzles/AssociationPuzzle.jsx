@@ -46,7 +46,6 @@ const AssociationPuzzle = forwardRef(({
   // Banco completo de 30 asociaciones de bienestar
   const allWellnessAssociations = useMemo(() => [
     // SALUD FÍSICA (8 asociaciones)
-    { concept: 'Ejercicio Regular', image: '🏃‍♂️', category: 'Salud Física', color: '#10B981', description: 'El ejercicio regular fortalece el cuerpo y mejora la salud cardiovascular.' },
     { concept: 'Alimentación Balanceada', image: '🥗', category: 'Salud Física', color: '#10B981', description: 'Una dieta equilibrada proporciona los nutrientes necesarios para el cuerpo.' },
     { concept: 'Hidratación Adecuada', image: '💧', category: 'Salud Física', color: '#10B981', description: 'Beber suficiente agua mantiene el cuerpo hidratado y funcionando correctamente.' },
     { concept: 'Descanso Reparador', image: '😴', category: 'Salud Física', color: '#10B981', description: 'El sueño de calidad es esencial para la recuperación y el bienestar físico.' },
