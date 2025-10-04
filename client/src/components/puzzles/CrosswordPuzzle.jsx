@@ -443,8 +443,14 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
       // Encontrar una pista sin completar
       const incompleteClues = clues.filter(clue => {
         const clueKey = `${clue.number}-${clue.direction}`;
-        const userAnswer = userAnswers[clueKey] || '';
-        return userAnswer !== clue.word;
+        const userAnswer = userAnswers[clueKey] || {};
+        // Reconstruir la palabra desde el objeto
+        const answerArray = [];
+        for (let i = 0; i < clue.length; i++) {
+          answerArray[i] = userAnswer[i] || '';
+        }
+        const answerString = answerArray.join('');
+        return answerString !== clue.word;
       });
 
       if (incompleteClues.length === 0) {
@@ -703,7 +709,7 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
                       if (!displayLetter) {
                         for (const crossClue of allCluesForCell) {
                           const crossClueKey = `${crossClue.number}-${crossClue.direction}`;
-                          const crossAnswer = userAnswers[crossClueKey] || '';
+                          const crossAnswer = userAnswers[crossClueKey] || {};
                           const crossLetterIndex = crossClue.direction === 'across' ? colIndex - crossClue.col : rowIndex - crossClue.row;
                           if (crossAnswer[crossLetterIndex]) {
                             displayLetter = crossAnswer[crossLetterIndex];
