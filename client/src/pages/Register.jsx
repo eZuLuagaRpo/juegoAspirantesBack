@@ -236,9 +236,9 @@ const Register = () => {
           <h2 className="text-3xl font-bold usb-dark font-display">
             ¡Únete a la aventura!
           </h2>
-          <p className="mt-2 text-sm usb-light">
-            Crea tu cuenta y comienza a aprender jugando
-          </p>
+            <p className="mt-2 text-sm usb-light">
+              Crea tu cuenta y comienza a aprender jugando.
+            </p>
         </div>
       </div>
 

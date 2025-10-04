@@ -388,7 +388,7 @@ class ProgressService {
       `, [userId, levelId]);
       
       // Actualizar nivel actual del usuario
-      const levelOrder = ['mercadeo', 'registroAcademico', 'bienestar', 'facultades', 'cartera'];
+      const levelOrder = ['mercadeo', 'registroAcademico', 'facultades', 'bienestar', 'cartera'];
       const currentIndex = levelOrder.indexOf(levelId);
       if (currentIndex < levelOrder.length - 1) {
         const nextLevel = levelOrder[currentIndex + 1];

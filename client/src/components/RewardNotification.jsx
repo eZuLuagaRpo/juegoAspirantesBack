@@ -260,7 +260,7 @@ const RewardNotification = ({
               ¡Tienes {rewards.length} nueva{rewards.length > 1 ? 's' : ''} recompensa{rewards.length > 1 ? 's' : ''} disponible{rewards.length > 1 ? 's' : ''}!
             </h3>
             <p className="text-yellow-100 text-sm">
-              Ve a la sección de recompensas para reclamarlas
+              Ve a la sección de recompensas para reclamarlas.
             </p>
           </div>
         </div>

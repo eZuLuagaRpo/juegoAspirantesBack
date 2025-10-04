@@ -123,7 +123,7 @@ const Profile = () => {
                 Mi Perfil
               </h1>
               <p className="text-gray-600 mt-2">
-                Gestiona tu información personal y revisa tu progreso
+                Gestiona tu información personal y revisa tu progreso.
               </p>
             </div>
             <button

@@ -55,9 +55,9 @@ const Login = () => {
           <h2 className="text-3xl font-bold usb-dark font-display">
             ¡Bienvenido de vuelta!
           </h2>
-          <p className="mt-2 text-sm usb-light">
-            Continúa tu aventura educativa en la USB Medellín
-          </p>
+            <p className="mt-2 text-sm usb-light">
+              Continúa tu aventura educativa en la USB Medellín.
+            </p>
         </div>
       </div>
 
@@ -152,7 +152,7 @@ const Login = () => {
           y{' '}
           <a href="#" className="font-medium text-usb-orange-500 hover:text-usb-orange-600">
             Política de Privacidad
-          </a>
+          </a>.
         </p>
       </div>
     </div>

@@ -75,7 +75,6 @@ const Contact = () => {
       icon: <Clock className="w-6 h-6" />,
       title: 'Horario de Atención',
       info: 'Lunes a Viernes: 8:00 AM - 6:00 PM',
-      description: 'Sábados: 8:00 AM - 12:00 PM',
       color: 'from-purple-500 to-purple-600'
     }
   ];

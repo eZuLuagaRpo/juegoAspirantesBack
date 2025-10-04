@@ -354,10 +354,10 @@ const SudokuPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) => {
         title: '⏱️ Penalización por Tiempo',
         type: 'list',
         items: [
-          '≤ 12 min: -0 estrellas ✅',
-          '12-14 min: -1 estrella ⚠️',
-          '14-16 min: -2 estrellas ⚠️',
-          '16-17 min: -3 estrellas ❌'
+          '≤ 14 min: -0 estrellas ✅',
+          '14-16 min: -1 estrella ⚠️',
+          '16-18 min: -2 estrellas ⚠️',
+          '18-19 min: -3 estrellas ❌'
         ]
       },
       {

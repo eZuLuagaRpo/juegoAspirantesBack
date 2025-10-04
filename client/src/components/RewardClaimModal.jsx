@@ -45,7 +45,7 @@ const RewardClaimModal = ({ isOpen, onClose, user, reward, onClaimReward, isClai
               ¡Felicitaciones, {user?.firstName}!
             </h1>
             <p className="text-xl text-green-100">
-              Has completado exitosamente todos los puzzles
+              Has completado exitosamente todos los puzzles.
             </p>
           </div>
         </div>

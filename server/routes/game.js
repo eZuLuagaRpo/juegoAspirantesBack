@@ -519,141 +519,17 @@ router.post('/calculate-stars', [
     
     // 1. SOPA DE LETRAS (mercadeo_1)
     if (puzzleId === 'mercadeo_1') {
-      optimalTime = 300; // 5 minutos
+      optimalTime = 420; // 7 minutos
       
       // Penalización por tiempo
-      if (timeSpent <= 300) {
-        timePenalty = 0; // <= 5 min: Tiempo óptimo
-      } else if (timeSpent <= 360) {
-        timePenalty = 1; // 5-6 min: -1 estrella
-      } else if (timeSpent <= 420) {
-        timePenalty = 2; // 6-7 min: -2 estrellas
+      if (timeSpent <= 420) {
+        timePenalty = 0; // <= 7 min: Tiempo óptimo
       } else if (timeSpent <= 480) {
-        timePenalty = 3; // 7-8 min: -3 estrellas
-      } else {
-        timePenalty = 3; // Más de 8 min: -3 estrellas (máximo)
-      }
-      
-      // Penalización por errores
-      if (errorCount <= 1) {
-        errorPenalty = 0; // 0-1 errores
-      } else if (errorCount <= 3) {
-        errorPenalty = 1; // 2-3 errores: -1 estrella
-      } else if (errorCount <= 5) {
-        errorPenalty = 2; // 4-5 errores: -2 estrellas
-      } else if (errorCount <= 7) {
-        errorPenalty = 3; // 6-7 errores: -3 estrellas
-      } else {
-        errorPenalty = 3; // Más de 7 errores: -3 estrellas (máximo)
-      }
-    }
-    
-    // 2. ROMPECABEZAS (mercadeo_2)
-    else if (puzzleId === 'mercadeo_2') {
-      optimalTime = 300; // 5 minutos
-      
-      // Penalización por tiempo
-      if (timeSpent <= 300) {
-        timePenalty = 0; // Tiempo óptimo
-      } else if (timeSpent <= 420) {
-        timePenalty = 1; // 5-7 min: -1 estrella
+        timePenalty = 1; // 7-8 min: -1 estrella
       } else if (timeSpent <= 540) {
-        timePenalty = 2; // 7-9 min: -2 estrellas
-      } else if (timeSpent <= 720) {
-        timePenalty = 3; // 9-12 min: -3 estrellas
-      } else {
-        timePenalty = 3; // Más de 12 min: -3 estrellas (máximo)
-      }
-      
-      // Penalización por errores
-      if (errorCount <= 1) {
-        errorPenalty = 0; // 0-1 errores
-      } else if (errorCount <= 3) {
-        errorPenalty = 1; // 2-3 errores: -1 estrella
-      } else if (errorCount <= 5) {
-        errorPenalty = 2; // 4-5 errores: -2 estrellas
-      } else if (errorCount <= 7) {
-        errorPenalty = 3; // 6-7 errores: -3 estrellas
-      } else {
-        errorPenalty = 3; // Más de 7 errores: -3 estrellas (máximo)
-      }
-    }
-    
-    // 3. SUDOKU (registro_1)
-    else if (puzzleId === 'registro_1') {
-      optimalTime = 720; // 12 minutos
-      
-      // Penalización por tiempo
-      if (timeSpent <= 720) {
-        timePenalty = 0; // <= 12 min: Tiempo óptimo
-      } else if (timeSpent <= 840) {
-        timePenalty = 1; // 12-14 min: -1 estrella
-      } else if (timeSpent <= 960) {
-        timePenalty = 2; // 14-16 min: -2 estrellas
-      } else if (timeSpent <= 1020) {
-        timePenalty = 3; // 16-17 min: -3 estrellas
-      } else {
-        timePenalty = 3; // Más de 17 min: -3 estrellas (máximo)
-      }
-      
-      // Penalización por errores
-      if (errorCount <= 1) {
-        errorPenalty = 0; // 0-1 errores
-      } else if (errorCount <= 3) {
-        errorPenalty = 1; // 2-3 errores: -1 estrella
-      } else if (errorCount <= 5) {
-        errorPenalty = 2; // 4-5 errores: -2 estrellas
-      } else if (errorCount <= 7) {
-        errorPenalty = 3; // 6-7 errores: -3 estrellas
-      } else {
-        errorPenalty = 3; // Más de 7 errores: -3 estrellas (máximo)
-      }
-    }
-    
-    // 4. PROCESO SECUENCIAL (registro_2)
-    else if (puzzleId === 'registro_2') {
-      optimalTime = 90; // 1.5 minutos
-      
-      // Penalización por tiempo
-      if (timeSpent <= 90) {
-        timePenalty = 0; // Tiempo óptimo
-      } else if (timeSpent <= 180) {
-        timePenalty = 1; // 1.5-3 min: -1 estrella
-      } else if (timeSpent <= 240) {
-        timePenalty = 2; // 3-4 min: -2 estrellas
-      } else if (timeSpent <= 300) {
-        timePenalty = 3; // 4-5 min: -3 estrellas
-      } else {
-        timePenalty = 3; // Más de 5 min: -3 estrellas (máximo)
-      }
-      
-      // Penalización por errores
-      if (errorCount <= 1) {
-        errorPenalty = 0; // 0-1 errores
-      } else if (errorCount <= 3) {
-        errorPenalty = 1; // 2-3 errores: -1 estrella
-      } else if (errorCount <= 5) {
-        errorPenalty = 2; // 4-5 errores: -2 estrellas
-      } else if (errorCount <= 7) {
-        errorPenalty = 3; // 6-7 errores: -3 estrellas
-      } else {
-        errorPenalty = 3; // Más de 7 errores: -3 estrellas (máximo)
-      }
-    }
-    
-    // 5. ASOCIACIONES (bienestar_1)
-    else if (puzzleId === 'bienestar_1') {
-      optimalTime = 150; // 2.5 minutos
-      
-      // Penalización por tiempo
-      if (timeSpent <= 150) {
-        timePenalty = 0; // Tiempo óptimo
-      } else if (timeSpent <= 300) {
-        timePenalty = 1; // 2.5-5 min: -1 estrella
-      } else if (timeSpent <= 420) {
-        timePenalty = 2; // 5-7 min: -2 estrellas
+        timePenalty = 2; // 8-9 min: -2 estrellas
       } else if (timeSpent <= 600) {
-        timePenalty = 3; // 7-10 min: -3 estrellas
+        timePenalty = 3; // 9-10 min: -3 estrellas
       } else {
         timePenalty = 3; // Más de 10 min: -3 estrellas (máximo)
       }
@@ -672,15 +548,108 @@ router.post('/calculate-stars', [
       }
     }
     
-    // 6. CRUCIGRAMA (facultades_1)
-    else if (puzzleId === 'facultades_1') {
-      optimalTime = 300; // 5 minutos
+    // 2. ROMPECABEZAS (mercadeo_2)
+    else if (puzzleId === 'mercadeo_2') {
+      optimalTime = 420; // 7 minutos
       
       // Penalización por tiempo
-      if (timeSpent <= 300) {
+      if (timeSpent <= 420) {
+        timePenalty = 0; // Tiempo óptimo
+      } else if (timeSpent <= 540) {
+        timePenalty = 1; // 7-9 min: -1 estrella
+      } else if (timeSpent <= 660) {
+        timePenalty = 2; // 9-11 min: -2 estrellas
+      } else if (timeSpent <= 840) {
+        timePenalty = 3; // 11-14 min: -3 estrellas
+      } else {
+        timePenalty = 3; // Más de 14 min: -3 estrellas (máximo)
+      }
+      
+      // Penalización por errores
+      if (errorCount <= 1) {
+        errorPenalty = 0; // 0-1 errores
+      } else if (errorCount <= 3) {
+        errorPenalty = 1; // 2-3 errores: -1 estrella
+      } else if (errorCount <= 5) {
+        errorPenalty = 2; // 4-5 errores: -2 estrellas
+      } else if (errorCount <= 7) {
+        errorPenalty = 3; // 6-7 errores: -3 estrellas
+      } else {
+        errorPenalty = 3; // Más de 7 errores: -3 estrellas (máximo)
+      }
+    }
+    
+    // 3. SUDOKU (registro_1)
+    else if (puzzleId === 'registro_1') {
+      optimalTime = 840; // 14 minutos
+      
+      // Penalización por tiempo
+      if (timeSpent <= 840) {
+        timePenalty = 0; // <= 14 min: Tiempo óptimo
+      } else if (timeSpent <= 960) {
+        timePenalty = 1; // 14-16 min: -1 estrella
+      } else if (timeSpent <= 1080) {
+        timePenalty = 2; // 16-18 min: -2 estrellas
+      } else if (timeSpent <= 1140) {
+        timePenalty = 3; // 18-19 min: -3 estrellas
+      } else {
+        timePenalty = 3; // Más de 19 min: -3 estrellas (máximo)
+      }
+      
+      // Penalización por errores
+      if (errorCount <= 1) {
+        errorPenalty = 0; // 0-1 errores
+      } else if (errorCount <= 3) {
+        errorPenalty = 1; // 2-3 errores: -1 estrella
+      } else if (errorCount <= 5) {
+        errorPenalty = 2; // 4-5 errores: -2 estrellas
+      } else if (errorCount <= 7) {
+        errorPenalty = 3; // 6-7 errores: -3 estrellas
+      } else {
+        errorPenalty = 3; // Más de 7 errores: -3 estrellas (máximo)
+      }
+    }
+    
+    // 4. PROCESO SECUENCIAL (registro_2)
+    else if (puzzleId === 'registro_2') {
+      optimalTime = 210; // 3.5 minutos
+      
+      // Penalización por tiempo
+      if (timeSpent <= 210) {
+        timePenalty = 0; // Tiempo óptimo
+      } else if (timeSpent <= 300) {
+        timePenalty = 1; // 3.5-5 min: -1 estrella
+      } else if (timeSpent <= 360) {
+        timePenalty = 2; // 5-6 min: -2 estrellas
+      } else if (timeSpent <= 420) {
+        timePenalty = 3; // 6-7 min: -3 estrellas
+      } else {
+        timePenalty = 3; // Más de 7 min: -3 estrellas (máximo)
+      }
+      
+      // Penalización por errores
+      if (errorCount <= 1) {
+        errorPenalty = 0; // 0-1 errores
+      } else if (errorCount <= 3) {
+        errorPenalty = 1; // 2-3 errores: -1 estrella
+      } else if (errorCount <= 5) {
+        errorPenalty = 2; // 4-5 errores: -2 estrellas
+      } else if (errorCount <= 7) {
+        errorPenalty = 3; // 6-7 errores: -3 estrellas
+      } else {
+        errorPenalty = 3; // Más de 7 errores: -3 estrellas (máximo)
+      }
+    }
+    
+    // 5. ASOCIACIONES (bienestar_1)
+    else if (puzzleId === 'bienestar_1') {
+      optimalTime = 270; // 4.5 minutos
+      
+      // Penalización por tiempo
+      if (timeSpent <= 270) {
         timePenalty = 0; // Tiempo óptimo
       } else if (timeSpent <= 420) {
-        timePenalty = 1; // 5-7 min: -1 estrella
+        timePenalty = 1; // 4.5-7 min: -1 estrella
       } else if (timeSpent <= 540) {
         timePenalty = 2; // 7-9 min: -2 estrellas
       } else if (timeSpent <= 720) {
@@ -703,19 +672,50 @@ router.post('/calculate-stars', [
       }
     }
     
-    // 7. MATEMÁTICAS (cartera_1)
-    else if (puzzleId === 'cartera_1') {
+    // 6. CRUCIGRAMA (facultades_1)
+    else if (puzzleId === 'facultades_1') {
       optimalTime = 420; // 7 minutos
       
       // Penalización por tiempo
       if (timeSpent <= 420) {
-        timePenalty = 0; // <= 7 min: Tiempo óptimo
-      } else if (timeSpent <= 600) {
-        timePenalty = 1; // 7-10 min: -1 estrella
-      } else if (timeSpent <= 780) {
-        timePenalty = 2; // 10-13 min: -2 estrellas
+        timePenalty = 0; // Tiempo óptimo
+      } else if (timeSpent <= 540) {
+        timePenalty = 1; // 7-9 min: -1 estrella
+      } else if (timeSpent <= 660) {
+        timePenalty = 2; // 9-11 min: -2 estrellas
+      } else if (timeSpent <= 840) {
+        timePenalty = 3; // 11-14 min: -3 estrellas
       } else {
-        timePenalty = 3; // >13 min: -3 estrellas (máximo)
+        timePenalty = 3; // Más de 14 min: -3 estrellas (máximo)
+      }
+      
+      // Penalización por errores
+      if (errorCount <= 1) {
+        errorPenalty = 0; // 0-1 errores
+      } else if (errorCount <= 3) {
+        errorPenalty = 1; // 2-3 errores: -1 estrella
+      } else if (errorCount <= 5) {
+        errorPenalty = 2; // 4-5 errores: -2 estrellas
+      } else if (errorCount <= 7) {
+        errorPenalty = 3; // 6-7 errores: -3 estrellas
+      } else {
+        errorPenalty = 3; // Más de 7 errores: -3 estrellas (máximo)
+      }
+    }
+    
+    // 7. MATEMÁTICAS (cartera_1)
+    else if (puzzleId === 'cartera_1') {
+      optimalTime = 540; // 9 minutos
+      
+      // Penalización por tiempo
+      if (timeSpent <= 540) {
+        timePenalty = 0; // <= 9 min: Tiempo óptimo
+      } else if (timeSpent <= 720) {
+        timePenalty = 1; // 9-12 min: -1 estrella
+      } else if (timeSpent <= 900) {
+        timePenalty = 2; // 12-15 min: -2 estrellas
+      } else {
+        timePenalty = 3; // >15 min: -3 estrellas (máximo)
       }
       
       // Penalización por errores - Sistema específico para matemáticas
@@ -733,19 +733,19 @@ router.post('/calculate-stars', [
     
     // 8. MEMORY MATCH (cartera_2)
     else if (puzzleId === 'cartera_2') {
-      optimalTime = 300; // 5 minutos
+      optimalTime = 420; // 7 minutos
       
       // Penalización por tiempo
-      if (timeSpent <= 300) {
+      if (timeSpent <= 420) {
         timePenalty = 0; // Tiempo óptimo
-      } else if (timeSpent <= 420) {
-        timePenalty = 1; // 5-7 min: -1 estrella
       } else if (timeSpent <= 540) {
-        timePenalty = 2; // 7-9 min: -2 estrellas
-      } else if (timeSpent <= 720) {
-        timePenalty = 3; // 9-12 min: -3 estrellas
+        timePenalty = 1; // 7-9 min: -1 estrella
+      } else if (timeSpent <= 660) {
+        timePenalty = 2; // 9-11 min: -2 estrellas
+      } else if (timeSpent <= 840) {
+        timePenalty = 3; // 11-14 min: -3 estrellas
       } else {
-        timePenalty = 3; // Más de 12 min: -3 estrellas (máximo)
+        timePenalty = 3; // Más de 14 min: -3 estrellas (máximo)
       }
       
       // Penalización por errores - MEMORY MATCH

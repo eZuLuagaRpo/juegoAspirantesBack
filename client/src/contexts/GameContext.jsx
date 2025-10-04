@@ -258,7 +258,7 @@ export const GameProvider = ({ children }) => {
       
       // Si el nivel se completó, manejar la finalización
       if (completed && newProgress.completedLevels.includes(levelId)) {
-        const levelOrder = ['mercadeo', 'registroAcademico', 'bienestar', 'facultades', 'cartera'];
+        const levelOrder = ['mercadeo', 'registroAcademico', 'facultades', 'bienestar', 'cartera'];
         const currentIndex = levelOrder.indexOf(levelId);
         const nextLevelId = levelOrder[currentIndex + 1];
         
@@ -457,7 +457,7 @@ export const GameProvider = ({ children }) => {
   const isLevelUnlocked = (levelId) => {
     if (!userProgress) return levelId === 'mercadeo';
     
-    const levelOrder = ['mercadeo', 'registroAcademico', 'bienestar', 'facultades', 'cartera'];
+    const levelOrder = ['mercadeo', 'registroAcademico', 'facultades', 'bienestar', 'cartera'];
     const levelIndex = levelOrder.indexOf(levelId);
     
     // El primer nivel (mercadeo) siempre está desbloqueado

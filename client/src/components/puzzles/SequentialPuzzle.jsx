@@ -283,6 +283,11 @@ const SequentialPuzzle = forwardRef(({
     subtitle: 'Aprende el proceso correcto de inscripción y matrícula académica',
     sections: [
       {
+        title: '🎯 ¡El momento de asegurarte que todo está en orden!',
+        type: 'text',
+        content: 'Aquí verificamos tus datos, validamos los documentos y aseguramos de que tu matrícula y horarios estén listos para comenzar. Durante el proceso, te ayudamos a que tu inscripción sea perfecta, para que puedas enfocarte en lo que realmente importa: ¡tu futuro académico!'
+      },
+      {
         title: '🎓 Proceso de Inscripción',
         type: 'list',
         items: [
@@ -339,10 +344,10 @@ const SequentialPuzzle = forwardRef(({
         title: '⏱️ Penalización por Tiempo',
         type: 'list',
         items: [
-          '≤ 1.5 min: -0 estrellas ✅',
-          '1.5-3 min: -1 estrella ⚠️',
-          '3-4 min: -2 estrellas ⚠️',
-          '4-5 min: -3 estrellas ❌'
+          '≤ 3.5 min: -0 estrellas ✅',
+          '3.5-5 min: -1 estrella ⚠️',
+          '5-6 min: -2 estrellas ⚠️',
+          '6-7 min: -3 estrellas ❌'
         ]
       },
       {

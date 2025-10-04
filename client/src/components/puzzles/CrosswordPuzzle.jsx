@@ -538,10 +538,10 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
         title: '⏱️ Penalización por Tiempo',
         type: 'list',
         items: [
-          '≤ 5 min: -0 estrellas ✅',
-          '5-7 min: -1 estrella ⚠️',
-          '7-9 min: -2 estrellas ⚠️',
-          '9-12 min: -3 estrellas ❌'
+          '≤ 7 min: -0 estrellas ✅',
+          '7-9 min: -1 estrella ⚠️',
+          '9-11 min: -2 estrellas ⚠️',
+          '11-14 min: -3 estrellas ❌'
         ]
       },
       {
@@ -620,9 +620,9 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
               >
                 {/* Instrucciones de teclado - MOVIDAS ARRIBA */}
                 <div className="text-center text-gray-600 text-sm mb-4">
-                  <p>Usa las teclas del alfabeto para ingresar letras</p>
-                  <p>Se mueve automáticamente dentro de la palabra seleccionada</p>
-                  <p>Usa las flechas para navegación manual opcional</p>
+                  <p>Usa las teclas del alfabeto para ingresar letras.</p>
+                  <p>Se mueve automáticamente dentro de la palabra seleccionada.</p>
+                  <p>Usa las flechas para navegación manual opcional.</p>
                   {currentClue && writingMode && (
                     <p className="mt-2 text-blue-600 font-semibold">
                       Palabra {currentClue.number}: {currentClue.direction === 'across' ? '→' : '↓'} {currentClue.definition}
@@ -630,7 +630,7 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
                   )}
                   {!writingMode && (
                     <p className="mt-2 text-orange-600 font-semibold">
-                      Haz clic en una celda para comenzar a escribir
+                      Haz clic en una celda para comenzar a escribir.
                     </p>
                   )}
                 </div>

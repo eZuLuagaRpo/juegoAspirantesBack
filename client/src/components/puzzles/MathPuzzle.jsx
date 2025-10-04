@@ -79,7 +79,7 @@ const allFinancialProblems = [
     category: 'Descuentos Especiales',
     level: 'Fácil',
     title: 'Descuentos Acumulativos',
-    problem: `Matrícula: $1,500,000. Descuento pronto pago: 8%. Descuento hermanos: 5%. ¿Cuánto ahorras con ambos descuentos? (Respuesta: solo el número del ahorro en pesos, sin comas ni puntos)`,
+    problem: `Matrícula: $1,500,000. Descuento pronto pago: 8%. Descuento pronto pago: 5%. ¿Cuánto ahorras con ambos descuentos? (Respuesta: solo el número del ahorro en pesos, sin comas ni puntos)`,
     answer: 195000,
     tolerance: 0.01,
     concept: 'Descuentos acumulativos',
@@ -89,7 +89,7 @@ const allFinancialProblems = [
       'Fórmula: $1,500,000 × 0.13 = ?'
     ],
     educationalTip: 'Los descuentos se pueden acumular, ¡aprovecha todas las opciones disponibles!',
-    curiosity: 'Los descuentos por hermanos pueden ahorrarte mucho dinero si tienes familiares en la universidad.'
+    curiosity: 'Los descuentos por pronto pago pueden ahorrarte mucho dinero.'
   },
   {
     id: 4,
@@ -115,7 +115,7 @@ const allFinancialProblems = [
     category: 'Pagos y Matrículas',
     level: 'Intermedio',
     title: 'Descuentos Sucesivos',
-    problem: `Matrícula: $2,000,000. Descuento pronto pago: 10%. Descuento hermanos: 5%. ¿Cuál es el valor final a pagar? (Respuesta: solo el número en pesos, sin comas ni puntos)`,
+    problem: `Matrícula: $2,000,000. Descuento pronto pago: 10%. Descuento por convenio: 5%. ¿Cuál es el valor final a pagar? (Respuesta: solo el número en pesos, sin comas ni puntos)`,
     answer: 1710000,
     tolerance: 0.01,
     concept: 'Descuentos sucesivos',
@@ -186,8 +186,8 @@ const allFinancialProblems = [
     id: 9,
     category: 'Becas y Subsidios',
     level: 'Muy Fácil',
-    title: 'Beca por Hermanos',
-    problem: `Si tienes un hermano en la universidad, recibes 15% de beca. Matrícula: $1,200,000. ¿Cuánto pagas con la beca? (Respuesta: solo el número en pesos, sin comas ni puntos)`,
+    title: 'Descuento por convenio',
+    problem: `Si tienes un convenio con una institución aliada a la universidad, recibes 15% de descuento. Matrícula: $1,200,000. ¿Cuánto pagas con el descuento? (Respuesta: solo el número en pesos, sin comas ni puntos)`,
     answer: 1020000,
     tolerance: 0.01,
     concept: 'Porcentajes básicos',
@@ -196,8 +196,8 @@ const allFinancialProblems = [
       'Fórmula: $1,200,000 × 0.85 = ?',
       'Multiplica 1,200,000 por 0.85 para obtener la respuesta'
     ],
-    educationalTip: 'Las becas por hermanos son una excelente forma de ahorrar en educación.',
-    curiosity: 'Las familias con múltiples estudiantes universitarios pueden ahorrar hasta $500,000 anuales.'
+    educationalTip: 'Los descuentos por convenios son una excelente forma de ahorrar en educación.',
+    curiosity: 'Los convenios con instituciones aliadas a la universidad son una excelente forma de ahorrar en educación.'
   },
   {
     id: 10,
@@ -354,24 +354,6 @@ const allFinancialProblems = [
   },
   {
     id: 19,
-    category: 'Pagos y Matrículas',
-    level: 'Avanzado',
-    title: 'Comparación de Opciones Compleja',
-    problem: `Opción A: $4,000,000 al contado con 15% descuento. Opción B: $1,500,000 inicial + 5 cuotas de $600,000. Opción C: $2,000,000 inicial + 4 cuotas de $550,000. ¿Cuál es la más económica y por cuánto? (Respuesta: solo el número de la diferencia en pesos, sin comas ni puntos)`,
-    answer: 800000,
-    tolerance: 0.01,
-    concept: 'Análisis comparativo complejo',
-    tips: [
-      'Opción A: $4,000,000 × 0.85 = $3,400,000',
-      'Opción B: $1,500,000 + (5 × $600,000) = $4,500,000',
-      'Opción C: $2,000,000 + (4 × $550,000) = $4,200,000',
-      'Opción A es la más económica. Diferencia con la segunda mejor: $4,200,000 - $3,400,000 = $800,000'
-    ],
-    educationalTip: 'Comparar múltiples opciones te ayuda a encontrar la mejor alternativa financiera.',
-    curiosity: 'Los estudiantes que comparan 3+ opciones ahorran en promedio $400,000 por semestre.'
-  },
-  {
-    id: 20,
     category: 'Becas y Subsidios',
     level: 'Avanzado',
     title: 'Beca por Méritos Múltiples',
@@ -840,10 +822,10 @@ const allFinancialProblems = [
         title: '⏱️ Penalización por Tiempo',
         type: 'list',
         items: [
-          '≤ 7 min: -0 estrellas ✅',
-          '7-10 min: -1 estrella ⚠️',
-          '10-13 min: -2 estrellas ⚠️',
-          '>13 min: -3 estrellas ❌'
+          '≤ 9 min: -0 estrellas ✅',
+          '9-12 min: -1 estrella ⚠️',
+          '12-15 min: -2 estrellas ⚠️',
+          '>15 min: -3 estrellas ❌'
         ]
       },
       {
@@ -886,7 +868,7 @@ const allFinancialProblems = [
         <div className="flex-1 flex items-center justify-center bg-gray-100">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Cargando Puzzle Matemático Financiero...</p>
+            <p className="text-gray-600">Cargando puzzle matemático financiero...</p>
           </div>
         </div>
         <GameSidebar {...rightSidebarConfig} />

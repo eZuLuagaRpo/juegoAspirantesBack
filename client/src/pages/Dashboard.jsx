@@ -224,7 +224,7 @@ const Dashboard = () => {
   const getCurrentLevel = () => {
     if (!userProgress || !levels.length) return 'Mercadeo';
     
-    const levelOrder = ['mercadeo', 'registroAcademico', 'bienestar', 'facultades', 'cartera'];
+    const levelOrder = ['mercadeo', 'registroAcademico', 'facultades', 'bienestar', 'cartera'];
     const completedLevels = userProgress.completedLevels || [];
     
     // Si no hay niveles completados, el nivel actual es el primero
@@ -327,7 +327,7 @@ const Dashboard = () => {
                 ¡Bienvenido, {user?.firstName}!
               </h1>
               <p className="usb-light mt-2">
-                Continúa tu aventura educativa en la USB Medellín
+                Continúa tu aventura educativa en la USB Medellín.
               </p>
             </div>
             <div className="flex items-center space-x-4">
@@ -413,7 +413,7 @@ const Dashboard = () => {
                           Próximo Descuento Disponible
                         </h3>
                         <p className="usb-light">
-                          Necesitas {progress.remaining} estrellas más para desbloquear {nextTier.title}
+                          Necesitas {progress.remaining} estrellas más para desbloquear <strong>{nextTier.title}</strong>.
                         </p>
                       </div>
                     </div>
@@ -430,7 +430,7 @@ const Dashboard = () => {
                   {/* Barra de progreso */}
                   <div className="mt-4">
                     <div className="flex items-center justify-between text-sm usb-light mb-2">
-                      <span>Progreso hacia {nextTier.title}</span>
+                      <span>Progreso hacia <strong>{nextTier.title}</strong></span>
                       <span>{userProgress?.totalStars || 0}/{nextTier.stars} estrellas</span>
                     </div>
                     <div className="w-full bg-usb-gray-200 rounded-full h-2">

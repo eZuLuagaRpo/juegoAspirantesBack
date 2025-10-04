@@ -44,8 +44,8 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
     const containerHeight = gameArea.offsetHeight;
     
     // Calcular el tamaño máximo que puede tener el puzzle
-    const maxWidth = Math.min(containerWidth - 100, 1200); // 100px de margen
-    const maxHeight = Math.min(containerHeight - 300, 800); // 300px para el área de piezas
+    const maxWidth = Math.min(containerWidth - 50, 1400); // 50px de margen, tamaño más grande
+    const maxHeight = Math.min(containerHeight - 250, 900); // 250px para el área de piezas, más espacio
     
     // Calcular dimensiones de piezas basadas en el contenedor
     const pieceWidth = Math.floor(maxWidth / PUZZLE_CONFIG.cols);
@@ -182,8 +182,8 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
         // Añadir rotación aleatoria para mayor desorden
         const randomRotation = (Math.random() - 0.5) * 30; // -15 a +15 grados
         
-        // Si es la pieza de la esquina superior izquierda (id: 0), colocarla directamente
-        if (id === 0) {
+        // Colocar las primeras 3 piezas (esquina superior izquierda, centro superior, esquina superior derecha)
+        if (id === 0 || id === 1 || id === 2) {
           newPieces.push({
             id,
             row,
@@ -198,7 +198,8 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
             isPlaced: true,
             isDragging: false,
             gridX: col,
-            gridY: row
+            gridY: row,
+            isLocked: true // Marcar como bloqueada
           });
         } else {
           newPieces.push({
@@ -227,8 +228,8 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
   const handlePieceMouseDown = useCallback((e, piece) => {
     if (gameCompleted) return;
     
-    // Bloquear la pieza 0 (la que está colocada por defecto)
-    if (piece.id === 0) {
+    // Bloquear las piezas iniciales (las primeras 3)
+    if (piece.isLocked) {
       toast.info('Esta pieza está fija y no se puede mover', {
         duration: 2000,
         icon: '🔒'
@@ -458,8 +459,8 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
           setTimeout(() => {
             const newPieces = createPuzzlePieces();
             setPieces(newPieces);
-            // La pieza 0 ya está colocada, así que agregarla a placedPieces
-            setPlacedPieces([0]);
+            // Las primeras 3 piezas ya están colocadas, así que agregarlas a placedPieces
+            setPlacedPieces([0, 1, 2]);
             setMoves(0);
             setHintCount(0);
             setGameCompleted(false);
@@ -581,7 +582,7 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
       const correctX = assemblyAreaX + correctGridX * pieceWidth;
       const correctY = assemblyAreaY + correctGridY * pieceHeight;
       
-      // Colocar pieza en su posición correcta
+      // Colocar pieza en su posición correcta y marcarla como bloqueada (pista)
       setPieces(prevPieces => 
         prevPieces.map(piece => 
           piece.id === randomPiece.id 
@@ -591,7 +592,8 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
                 y: correctY,
                 gridX: correctGridX,
                 gridY: correctGridY,
-                isPlaced: true
+                isPlaced: true,
+                isLocked: true // Marcar como bloqueada por pista
               }
             : piece
         )
@@ -638,7 +640,7 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
     const correctX = assemblyAreaX + correctGridX * PUZZLE_CONFIG.pieceWidth;
     const correctY = assemblyAreaY + correctGridY * PUZZLE_CONFIG.pieceHeight;
     
-    // Colocar pieza en su posición correcta
+    // Colocar pieza en su posición correcta y marcarla como bloqueada (pista)
     setPieces(prevPieces => 
       prevPieces.map(piece => 
         piece.id === randomPiece.id 
@@ -648,7 +650,8 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
               y: correctY,
               gridX: correctGridX,
               gridY: correctGridY,
-              isPlaced: true
+              isPlaced: true,
+              isLocked: true // Marcar como bloqueada por pista
             }
           : piece
       )
@@ -673,8 +676,8 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
   const resetPuzzle = () => {
     const newPieces = createPuzzlePieces();
     setPieces(newPieces);
-    // La pieza 0 ya está colocada, así que agregarla a placedPieces
-    setPlacedPieces([0]);
+    // Las primeras 3 piezas ya están colocadas, así que agregarlas a placedPieces
+    setPlacedPieces([0, 1, 2]);
     setMoves(0);
     setHintCount(0);
     setErrors(0);
@@ -691,7 +694,8 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
     const isPlaced = piece.isPlaced;
     const isDragging = piece.isDragging;
     const isOverAssemblyArea = piece.isOverAssemblyArea;
-    const isLocked = piece.id === 0; // Pieza bloqueada por defecto
+    const isLocked = piece.isLocked; // Pieza bloqueada
+    const isHintPiece = piece.isLocked && piece.id > 2; // Pieza bloqueada por pista (no las iniciales)
     
     
     // Calcular posición de la pieza en la imagen original
@@ -707,27 +711,31 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
       backgroundImage: `url(${puzzleImage})`,
       backgroundPosition: `-${sourceX}px -${sourceY}px`,
       backgroundSize: `${imageWidth}px ${imageHeight}px`,
-      border: isLocked
-        ? '3px solid #F59E0B' // Borde dorado para pieza bloqueada
-        : isPlaced 
-          ? '2px solid #10B981' 
-          : isDragging 
-            ? isOverAssemblyArea 
-              ? '3px solid #10B981' // Verde cuando está sobre área de ensamblaje
-              : '3px solid #3B82F6' // Azul cuando no está sobre área
-            : '1px solid #E5E7EB',
+      border: isHintPiece
+        ? '2px solid #F97316' // Borde naranja para pieza de pista
+        : isLocked
+          ? '2px solid #F59E0B' // Borde dorado más delgado para pieza bloqueada inicial
+          : isPlaced 
+            ? '1px solid #10B981' // Borde más delgado para piezas colocadas
+            : isDragging 
+              ? isOverAssemblyArea 
+                ? '2px solid #10B981' // Verde más delgado cuando está sobre área de ensamblaje
+                : '2px solid #3B82F6' // Azul más delgado cuando no está sobre área
+              : '0.5px solid #E5E7EB', // Borde muy delgado para piezas no colocadas
       borderRadius: '8px',
       cursor: isLocked ? 'not-allowed' : 'grab',
       zIndex: showCompletionAnimation || showWelcomeMessage ? 0 : (isDragging ? 1000 : 10),
-      boxShadow: isLocked
-        ? '0 4px 12px rgba(245, 158, 11, 0.3)' // Sombra dorada para pieza bloqueada
-        : isDragging 
-          ? isOverAssemblyArea
-            ? '0 8px 25px rgba(16, 185, 129, 0.4)' // Sombra verde cuando está sobre área
-            : '0 8px 25px rgba(59, 130, 246, 0.3)' // Sombra azul normal
-          : isPlaced 
-            ? '0 2px 8px rgba(16, 185, 129, 0.2)' 
-            : '0 2px 4px rgba(0, 0, 0, 0.1)',
+      boxShadow: isHintPiece
+        ? '0 4px 12px rgba(249, 115, 22, 0.3)' // Sombra naranja para pieza de pista
+        : isLocked
+          ? '0 4px 12px rgba(245, 158, 11, 0.3)' // Sombra dorada para pieza bloqueada inicial
+          : isDragging 
+            ? isOverAssemblyArea
+              ? '0 8px 25px rgba(16, 185, 129, 0.4)' // Sombra verde cuando está sobre área
+              : '0 8px 25px rgba(59, 130, 246, 0.3)' // Sombra azul normal
+            : isPlaced 
+              ? '0 2px 8px rgba(16, 185, 129, 0.2)' 
+              : '0 2px 4px rgba(0, 0, 0, 0.1)',
       transition: isDragging ? 'none' : 'all 0.3s ease',
       userSelect: 'none',
       // Asegurar que las piezas no colocadas sean visibles
@@ -806,10 +814,10 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
         title: '⏱️ Penalización por Tiempo',
         type: 'list',
         items: [
-          '≤ 5 min: -0 estrellas ✅',
-          '5-7 min: -1 estrella ⚠️',
-          '7-9 min: -2 estrellas ⚠️',
-          '9-12 min: -3 estrellas ❌'
+          '≤ 7 min: -0 estrellas ✅',
+          '7-9 min: -1 estrella ⚠️',
+          '9-11 min: -2 estrellas ⚠️',
+          '11-14 min: -3 estrellas ❌'
         ]
       },
       {
@@ -881,8 +889,8 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
                 id="puzzle-game-area"
                 className="relative bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl overflow-hidden shadow-md"
                 style={{ 
-                  width: 'min(80vw, 80vh, 650px)',
-                  height: 'min(80vw, 80vh, 650px)',
+                  width: 'min(90vw, 90vh, 800px)',
+                  height: 'min(90vw, 90vh, 800px)',
                   aspectRatio: '1'
                 }}
                 onMouseMove={handleMouseMove}

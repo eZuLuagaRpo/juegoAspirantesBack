@@ -25,22 +25,22 @@ const WelcomeModal = ({ isOpen, onClose }) => {
     {
       icon: <Trophy className="w-6 h-6 text-usb-orange-500" />,
       title: "Solo 1 intento por puzzle",
-      description: "Solo puedes intentar un puzzle una vez, por lo que debes de estar muy concentrado para no perder tus estrellas"
+      description: "Solo puedes intentar un puzzle una vez, por lo que debes estar muy concentrado para no perder tus estrellas."
     },
     {
       icon: <Gift className="w-6 h-6 text-usb-purple" />,
       title: "Las recompensas no son acumulables",
-      description: "Obtienes un solo premio, no puedes acumular recompensas, se aplica el mayor descuento obtenido"
+      description: "Obtienes un solo premio, no puedes acumular recompensas, se aplica el mayor descuento obtenido."
     },
     {
       icon: <Target className="w-6 h-6 text-usb-green" />,
       title: "Juega desde un computador",
-      description: "Los diferentes puzzles estan optimizados para una mejor experiencia y jugabilidad, por lo que te recomendamos jugar desde un computador"
+      description: "Los diferentes puzzles están optimizados para una mejor experiencia y jugabilidad, por lo que te recomendamos jugar desde un computador."
     },
     {
       icon: <Award className="w-6 h-6 text-usb-orange-500" />,
       title: "Solo tienes una oportunidad",
-      description: "Para reclamar tu premio debe ser con tu documento de identidad, por lo que no se puede crear más de una cuenta con el mismo documento"
+      description: "Para reclamar tu premio debe ser con tu documento de identidad, por lo que no se puede crear más de una cuenta con el mismo documento."
     }
   ];
 
@@ -86,7 +86,7 @@ const WelcomeModal = ({ isOpen, onClose }) => {
           {/* Características principales */}
           <div className="mb-8">
             <h3 className="text-xl font-bold usb-dark mb-6 text-center">
-              ¿Qué debes de tener en cuenta?
+              ¿Qué debes tener en cuenta?
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
               {features.map((feature, index) => (

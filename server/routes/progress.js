@@ -110,7 +110,7 @@ router.post('/:userId/update', [
         progress.completedLevels.push(levelId);
         
         // Desbloquear siguiente nivel (solo si no es el último nivel)
-        const levelOrder = ['mercadeo', 'registroAcademico', 'bienestar', 'facultades', 'cartera'];
+        const levelOrder = ['mercadeo', 'registroAcademico', 'facultades', 'bienestar', 'cartera'];
         const currentIndex = levelOrder.indexOf(levelId);
         if (currentIndex < levelOrder.length - 1) {
           progress.currentLevel = levelOrder[currentIndex + 1];

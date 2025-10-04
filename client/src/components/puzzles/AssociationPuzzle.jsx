@@ -53,14 +53,10 @@ const AssociationPuzzle = forwardRef(({
     { concept: 'Higiene Personal', image: '🧴', category: 'Salud Física', color: '#10B981', description: 'Mantener una buena higiene previene enfermedades y mejora la autoestima.' },
     { concept: 'Prevención Médica', image: '🩺', category: 'Salud Física', color: '#10B981', description: 'Los chequeos médicos regulares ayudan a prevenir y detectar problemas de salud.' },
     { concept: 'Actividad Física', image: '🤸‍♀️', category: 'Salud Física', color: '#10B981', description: 'Mantenerse activo mejora la fuerza, flexibilidad y resistencia física.' },
-    { concept: 'Cuidado Postural', image: '🧘‍♀️', category: 'Salud Física', color: '#10B981', description: 'Una buena postura previene dolores y mejora la salud de la columna.' },
 
     // SALUD MENTAL (8 asociaciones)
-    { concept: 'Gestión del Estrés', image: '🧘‍♂️', category: 'Salud Mental', color: '#3B82F6', description: 'Aprender a manejar el estrés mejora la calidad de vida y el rendimiento.' },
-    { concept: 'Meditación', image: '🕯️', category: 'Salud Mental', color: '#3B82F6', description: 'La meditación ayuda a calmar la mente y reducir la ansiedad.' },
-    { concept: 'Técnicas de Relajación', image: '🌊', category: 'Salud Mental', color: '#3B82F6', description: 'Practicar relajación reduce la tensión muscular y mental.' },
+    { concept: 'Meditación', image: '🧘‍♀️', category: 'Salud Mental', color: '#3B82F6', description: 'La meditación ayuda a calmar la mente y reducir la ansiedad.' },
     { concept: 'Autocuidado Emocional', image: '💝', category: 'Salud Mental', color: '#3B82F6', description: 'Cuidar las emociones es fundamental para el bienestar psicológico.' },
-    { concept: 'Mindfulness', image: '🌸', category: 'Salud Mental', color: '#3B82F6', description: 'Vivir el presente conscientemente mejora la atención y reduce la ansiedad.' },
     { concept: 'Terapia Psicológica', image: '🛋️', category: 'Salud Mental', color: '#3B82F6', description: 'La terapia profesional ayuda a resolver conflictos internos y emocionales.' },
     { concept: 'Gestión de Emociones', image: '🎭', category: 'Salud Mental', color: '#3B82F6', description: 'Reconocer y manejar las emociones mejora las relaciones interpersonales.' },
     { concept: 'Tiempo de Reflexión', image: '🤔', category: 'Salud Mental', color: '#3B82F6', description: 'Reservar tiempo para reflexionar ayuda a conocerse mejor y tomar decisiones.' },
@@ -76,9 +72,8 @@ const AssociationPuzzle = forwardRef(({
 
     // CULTURA (7 asociaciones)
     { concept: 'Música', image: '🎵', category: 'Cultura', color: '#8B5CF6', description: 'La música enriquece el alma y desarrolla la creatividad artística.' },
-    { concept: 'Arte Visual', image: '🎨', category: 'Cultura', color: '#8B5CF6', description: 'El arte visual estimula la creatividad y la expresión personal.' },
+    { concept: 'Artes Plásticas', image: '🎨', category: 'Cultura', color: '#8B5CF6', description: 'El arte visual estimula la creatividad y la expresión personal.' },
     { concept: 'Literatura', image: '📚', category: 'Cultura', color: '#8B5CF6', description: 'La lectura amplía el vocabulario y desarrolla el pensamiento crítico.' },
-    { concept: 'Teatro', image: '🎭', category: 'Cultura', color: '#8B5CF6', description: 'El teatro desarrolla la expresión corporal y la confianza en público.' },
     { concept: 'Danza', image: '💃', category: 'Cultura', color: '#8B5CF6', description: 'La danza mejora la coordinación y es una forma de expresión artística.' },
     { concept: 'Fotografía', image: '📸', category: 'Cultura', color: '#8B5CF6', description: 'La fotografía desarrolla la observación y la creatividad visual.' },
     { concept: 'Cine', image: '🎬', category: 'Cultura', color: '#8B5CF6', description: 'El cine es una forma de arte que combina narrativa y visual.' }
@@ -491,7 +486,6 @@ const AssociationPuzzle = forwardRef(({
         type: 'list',
         items: [
           'Becas por mérito académico',
-          'Descuentos por hermanos en la USB',
           'Ayudas económicas especiales',
           'Financiación flexible de matrícula',
           'Programas de apoyo estudiantil'
@@ -553,10 +547,10 @@ const AssociationPuzzle = forwardRef(({
         title: '⏱️ Penalización por Tiempo',
         type: 'list',
         items: [
-          '≤ 2.5 min: -0 estrellas ✅',
-          '2.5-5 min: -1 estrella ⚠️',
-          '5-7 min: -2 estrellas ⚠️',
-          '7-10 min: -3 estrellas ❌'
+          '≤ 4.5 min: -0 estrellas ✅',
+          '4.5-7 min: -1 estrella ⚠️',
+          '7-9 min: -2 estrellas ⚠️',
+          '9-12 min: -3 estrellas ❌'
         ]
       },
       {

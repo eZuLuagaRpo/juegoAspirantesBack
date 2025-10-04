@@ -93,7 +93,7 @@ const Rewards = () => {
                 🎓 Sistema de Recompensas
               </h1>
               <p className="usb-light mt-2">
-                Gana estrellas y obtén descuentos en tu matrícula universitaria
+                Gana estrellas y obtén descuentos en tu matrícula universitaria.
               </p>
             </div>
             <div className="text-center">
@@ -149,7 +149,7 @@ const Rewards = () => {
                       Próximo Descuento Disponible
                     </h3>
                     <p className="usb-light">
-                      Necesitas {nextTier.stars - totalStars} estrellas más para desbloquear {nextTier.title}
+                      Necesitas {nextTier.stars - totalStars} estrellas más para desbloquear {nextTier.title}.
                     </p>
                   </div>
                 </div>

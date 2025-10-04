@@ -23,7 +23,7 @@ const Home = () => {
     {
       icon: <Trophy className="w-8 h-8 text-usb-gold" />,
       title: 'Gana Recompensas',
-      description: 'Obtén increibles descuentos del hasta el 8% en tu matricula mediante estrellas en los diferentes juegos'
+      description: 'Obtén increíbles descuentos de hasta el 8% en tu matrícula mediante estrellas en los diferentes juegos'
     },
     {
       icon: <Star className="w-8 h-8 text-usb-gold" />,
@@ -207,9 +207,9 @@ const Home = () => {
           <h2 className="text-3xl md:text-4xl font-bold text-usb-white mb-6 font-display">
             ¿Listo para la aventura?
           </h2>
-          <p className="text-xl text-yellow-100 mb-8">
-            Únete a cientos de aspirantes que ya están aprendiendo mientras se divierten
-          </p>
+            <p className="text-xl text-yellow-100 mb-8">
+              Únete a cientos de aspirantes que ya están aprendiendo mientras se divierten.
+            </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             {isAuthenticated ? (
               <Link

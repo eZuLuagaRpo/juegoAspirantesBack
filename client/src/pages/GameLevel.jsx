@@ -822,7 +822,7 @@ const GameLevel = () => {
               </div>
               
               <p className="text-lg usb-dark mb-2">
-                Obtuviste {finalStars} de 5 estrellas
+                Obtuviste {finalStars} de 5 estrellas.
               </p>
               
               <div className="text-sm usb-light space-y-1">

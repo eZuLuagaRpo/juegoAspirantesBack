@@ -112,7 +112,7 @@ const CodeDisplayModal = ({ isOpen, onClose, user, reward, completionCode, onLog
                   {completionCode}
                 </div>
                 <p className="text-xs usb-light mb-2">
-                  Guarda este código para reclamar tu recompensa
+                  Guarda este código para reclamar tu recompensa.
                 </p>
                 
                 <div className="flex flex-col sm:flex-row gap-2 justify-center">
@@ -164,7 +164,7 @@ const CodeDisplayModal = ({ isOpen, onClose, user, reward, completionCode, onLog
                 <CheckCircle className="w-4 h-4 text-usb-orange-500 mt-0.5 flex-shrink-0" />
                 <div>
                   <h4 className="font-semibold text-usb-orange-800 mb-1 text-xs">
-                    Cómo Usar tu Código
+                    Cómo usar tu código
                   </h4>
                   <p className="text-xs text-usb-orange-700 leading-relaxed">
                     Presenta este código junto con tu documento de identidad en la oficina de admisiones de la USB Medellín. El código es válido únicamente para el próximo proceso de admisiones e inscripciones.

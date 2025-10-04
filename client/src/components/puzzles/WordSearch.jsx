@@ -535,7 +535,11 @@ const WordSearch = forwardRef(({
       {
         title: '🎯 ¡El inicio de tu aventura universitaria!',
         type: 'text',
-        content: 'En esta unidad nos encargamos de mostrarte todo lo que la USB tiene para ofrecerte. A través de campañas, eventos y actividades, te damos toda la información para que tomes la mejor decisión, es decir, ¡elegirnos! En todo momento de tu ingreso, respondemos todas tus preguntas y te guiamos para que descubras el programa perfecto para ti. ¡Prepárate para ser parte de algo increíble!'
+        content: 'En esta unidad nos encargamos de mostrarte todo lo que la USB tiene para ofrecerte. A través de campañas, eventos y actividades; te damos toda la información para que tomes la mejor decisión. es decir, ¡ELEGIRNOS!.'
+      },
+      {
+        type: 'text',
+        content: 'En el momento de tu ingreso, respondemos todas tus preguntas y te guiamos para que descubras el programa perfecto para ti. ¡Prepárate para ser parte de algo increíble!'
       },
       {
         title: '🌟 ¿Qué hacemos en Mercadeo?',
@@ -581,10 +585,10 @@ const WordSearch = forwardRef(({
         title: '⏱️ Penalización por Tiempo',
         type: 'list',
         items: [
-          '≤ 5 min: -0 estrellas ✅',
-          '5-6 min: -1 estrella ⚠️',
-          '6-7 min: -2 estrellas ⚠️',
-          '7-8 min: -3 estrellas ❌'
+          '≤ 7 min: -0 estrellas ✅',
+          '7-8 min: -1 estrella ⚠️',
+          '8-9 min: -2 estrellas ⚠️',
+          '9-10 min: -3 estrellas ❌'
         ]
       },
       {
