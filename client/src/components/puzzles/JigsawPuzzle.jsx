@@ -6,7 +6,7 @@ import ProgressBar from '../ProgressBar';
 const PUZZLE_CONFIG = {
   rows: 4,
   cols: 6,
-  snapThreshold: 50,
+  snapThreshold: 30, // Reducido para mayor precisión
   pieceSpacing: 10
 };
 
@@ -27,10 +27,10 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
   const [lastValidationCount, setLastValidationCount] = useState(0);
   const [isInitialized, setIsInitialized] = useState(false);
   const [puzzleDimensions, setPuzzleDimensions] = useState({
-    pieceWidth: 180,
-    pieceHeight: 135,
-    imageWidth: 1080,
-    imageHeight: 540,
+    pieceWidth: 200,
+    pieceHeight: 150,
+    imageWidth: 1200,
+    imageHeight: 600,
     assemblyAreaX: 50,
     assemblyAreaY: 50
   });
@@ -44,8 +44,8 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
     const containerHeight = gameArea.offsetHeight;
     
     // Calcular el tamaño máximo que puede tener el puzzle
-    const maxWidth = Math.min(containerWidth - 50, 1400); // 50px de margen, tamaño más grande
-    const maxHeight = Math.min(containerHeight - 250, 900); // 250px para el área de piezas, más espacio
+    const maxWidth = Math.min(containerWidth - 50, 1600); // 50px de margen, tamaño más grande
+    const maxHeight = Math.min(containerHeight - 250, 1000); // 250px para el área de piezas, más espacio
     
     // Calcular dimensiones de piezas basadas en el contenedor
     const pieceWidth = Math.floor(maxWidth / PUZZLE_CONFIG.cols);
@@ -308,11 +308,47 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
                               pieceCenterY >= assemblyAreaY && 
                               pieceCenterY <= assemblyAreaY + assemblyAreaHeight;
     
+    // Calcular la casilla objetivo para feedback visual
+    let targetGridX = null;
+    let targetGridY = null;
+    let canSnap = false;
+    
+    if (isOverAssemblyArea) {
+      const gridX = Math.floor((pieceCenterX - assemblyAreaX) / pieceWidth);
+      const gridY = Math.floor((pieceCenterY - assemblyAreaY) / pieceHeight);
+      
+      const clampedGridX = Math.max(0, Math.min(gridX, PUZZLE_CONFIG.cols - 1));
+      const clampedGridY = Math.max(0, Math.min(gridY, PUZZLE_CONFIG.rows - 1));
+      
+      // Calcular el centro de la casilla objetivo
+      const targetCenterX = assemblyAreaX + clampedGridX * pieceWidth + pieceWidth / 2;
+      const targetCenterY = assemblyAreaY + clampedGridY * pieceHeight + pieceHeight / 2;
+      
+      // Calcular la distancia entre el centro de la pieza y el centro de la casilla
+      const distanceX = Math.abs(pieceCenterX - targetCenterX);
+      const distanceY = Math.abs(pieceCenterY - targetCenterY);
+      const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+      
+      const snapThreshold = pieceWidth * 0.3;
+      canSnap = distance <= snapThreshold;
+      
+      targetGridX = clampedGridX;
+      targetGridY = clampedGridY;
+    }
+    
     // Actualizar posición de la pieza
     setPieces(prevPieces => 
       prevPieces.map(piece => 
         piece.id === draggedPieceId 
-          ? { ...piece, x: newX, y: newY, isOverAssemblyArea: isOverAssemblyArea }
+          ? { 
+              ...piece, 
+              x: newX, 
+              y: newY, 
+              isOverAssemblyArea: isOverAssemblyArea,
+              targetGridX: targetGridX,
+              targetGridY: targetGridY,
+              canSnap: canSnap
+            }
           : piece
       )
     );
@@ -343,15 +379,56 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
                             pieceCenterY <= assemblyAreaY + assemblyAreaHeight;
     
     if (isInAssemblyArea) {
-      // Calcular la casilla más cercana en la grilla
-      const gridX = Math.floor((x - assemblyAreaX) / pieceWidth);
-      const gridY = Math.floor((y - assemblyAreaY) / pieceHeight);
+      // Calcular el centro de la pieza
+      const pieceCenterX = x + pieceWidth / 2;
+      const pieceCenterY = y + pieceHeight / 2;
+      
+      // Calcular la casilla más cercana basada en el centro de la pieza
+      const gridX = Math.floor((pieceCenterX - assemblyAreaX) / pieceWidth);
+      const gridY = Math.floor((pieceCenterY - assemblyAreaY) / pieceHeight);
       
       // Asegurar que esté dentro de los límites de la grilla
       const clampedGridX = Math.max(0, Math.min(gridX, PUZZLE_CONFIG.cols - 1));
       const clampedGridY = Math.max(0, Math.min(gridY, PUZZLE_CONFIG.rows - 1));
       
-      // Calcular posición final en la grilla
+      // Calcular el centro de la casilla objetivo
+      const targetCenterX = assemblyAreaX + clampedGridX * pieceWidth + pieceWidth / 2;
+      const targetCenterY = assemblyAreaY + clampedGridY * pieceHeight + pieceHeight / 2;
+      
+      // Calcular la distancia entre el centro de la pieza y el centro de la casilla
+      const distanceX = Math.abs(pieceCenterX - targetCenterX);
+      const distanceY = Math.abs(pieceCenterY - targetCenterY);
+      const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+      
+      // Solo permitir colocación si está lo suficientemente cerca del centro (threshold más estricto)
+      const snapThreshold = pieceWidth * 0.3; // 30% del ancho de la pieza
+      
+      if (distance > snapThreshold) {
+        // Volver la pieza a su posición original si no está lo suficientemente cerca
+        setPieces(prevPieces => 
+          prevPieces.map(p => 
+            p.id === draggedPieceId 
+              ? { 
+                  ...p, 
+                  x: p.startX, 
+                  y: p.startY, 
+                  isDragging: false
+                }
+              : p
+          )
+        );
+        
+        toast.error('Acerca más la pieza al centro de la casilla', {
+          duration: 2000,
+          icon: '🎯'
+        });
+        
+        setDraggedPieceId(null);
+        setIsDragging(false);
+        return;
+      }
+      
+      // Calcular posición final en la grilla (centrada)
       const finalX = assemblyAreaX + clampedGridX * pieceWidth;
       const finalY = assemblyAreaY + clampedGridY * pieceHeight;
       
@@ -582,11 +659,27 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
       const correctX = assemblyAreaX + correctGridX * pieceWidth;
       const correctY = assemblyAreaY + correctGridY * pieceHeight;
       
-      // Colocar pieza en su posición correcta y marcarla como bloqueada (pista)
-      setPieces(prevPieces => 
-        prevPieces.map(piece => 
-          piece.id === randomPiece.id 
-            ? { 
+      // Verificar si ya hay una pieza en la posición correcta de la pista
+      const existingPieceInCorrectPosition = pieces.find(p => 
+        p.isPlaced && 
+        p.gridX === correctGridX && 
+        p.gridY === correctGridY && 
+        p.id !== randomPiece.id
+      );
+
+      // Si hay una pieza en la posición correcta, devolverla a la pool
+      if (existingPieceInCorrectPosition) {
+        const { pieceWidth, pieceHeight, assemblyAreaX, assemblyAreaY, imageWidth, imageHeight } = puzzleDimensions;
+        const piecesAreaXStart = 50;
+        const piecesAreaXEnd = imageWidth + 50 - pieceWidth;
+        const piecesAreaYStart = assemblyAreaY + imageHeight + 50;
+        const piecesAreaYEnd = piecesAreaYStart + 150 - pieceHeight;
+
+        // Colocar pieza en su posición correcta y marcarla como bloqueada (pista)
+        setPieces(prevPieces => 
+          prevPieces.map(piece => {
+            if (piece.id === randomPiece.id) {
+              return { 
                 ...piece, 
                 x: correctX,
                 y: correctY,
@@ -594,19 +687,68 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
                 gridY: correctGridY,
                 isPlaced: true,
                 isLocked: true // Marcar como bloqueada por pista
-              }
-            : piece
-        )
-      );
+              };
+            } else if (piece.id === existingPieceInCorrectPosition.id) {
+              // Devolver la pieza incorrecta a la pool
+              const randomX = piecesAreaXStart + Math.random() * (piecesAreaXEnd - piecesAreaXStart);
+              const randomY = piecesAreaYStart + Math.random() * (piecesAreaYEnd - piecesAreaYStart);
+              const randomRotation = (Math.random() - 0.5) * 30;
+              
+              return {
+                ...piece,
+                x: randomX,
+                y: randomY,
+                startX: randomX,
+                startY: randomY,
+                gridX: null,
+                gridY: null,
+                isPlaced: false,
+                isLocked: false,
+                rotation: randomRotation
+              };
+            }
+            return piece;
+          })
+        );
 
-      setPlacedPieces(prev => [...prev, randomPiece.id]);
+        // Actualizar lista de piezas colocadas
+        setPlacedPieces(prev => {
+          const filtered = prev.filter(id => id !== existingPieceInCorrectPosition.id);
+          return [...filtered, randomPiece.id];
+        });
+
+        toast.success(`Pista aplicada: Una pieza se colocó en su posición correcta. La pieza incorrecta fue devuelta a la pool.`, {
+          duration: 3000,
+          icon: '💡'
+        });
+      } else {
+        // No hay conflicto, colocar pieza normalmente
+        setPieces(prevPieces => 
+          prevPieces.map(piece => 
+            piece.id === randomPiece.id 
+              ? { 
+                  ...piece, 
+                  x: correctX,
+                  y: correctY,
+                  gridX: correctGridX,
+                  gridY: correctGridY,
+                  isPlaced: true,
+                  isLocked: true // Marcar como bloqueada por pista
+                }
+              : piece
+          )
+        );
+
+        setPlacedPieces(prev => [...prev, randomPiece.id]);
+        
+        toast.success('Pista aplicada: Una pieza se colocó en su posición correcta', {
+          duration: 2000,
+          icon: '💡'
+        });
+      }
+
       setHintCount(prev => prev + 1);
       onHintUsed();
-      
-      toast.success('Pista aplicada: Una pieza se colocó en su posición correcta', {
-        duration: 2000,
-        icon: '💡'
-      });
     }
   }), [pieces, placedPieces, hintCount, onHintUsed, validatePuzzle]);
 
@@ -640,11 +782,27 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
     const correctX = assemblyAreaX + correctGridX * PUZZLE_CONFIG.pieceWidth;
     const correctY = assemblyAreaY + correctGridY * PUZZLE_CONFIG.pieceHeight;
     
-    // Colocar pieza en su posición correcta y marcarla como bloqueada (pista)
-    setPieces(prevPieces => 
-      prevPieces.map(piece => 
-        piece.id === randomPiece.id 
-          ? { 
+    // Verificar si ya hay una pieza en la posición correcta de la pista
+    const existingPieceInCorrectPosition = pieces.find(p => 
+      p.isPlaced && 
+      p.gridX === correctGridX && 
+      p.gridY === correctGridY && 
+      p.id !== randomPiece.id
+    );
+
+    // Si hay una pieza en la posición correcta, devolverla a la pool
+    if (existingPieceInCorrectPosition) {
+      const { pieceWidth, pieceHeight, assemblyAreaX, assemblyAreaY, imageWidth, imageHeight } = puzzleDimensions;
+      const piecesAreaXStart = 50;
+      const piecesAreaXEnd = imageWidth + 50 - pieceWidth;
+      const piecesAreaYStart = assemblyAreaY + imageHeight + 50;
+      const piecesAreaYEnd = piecesAreaYStart + 150 - pieceHeight;
+
+      // Colocar pieza en su posición correcta y marcarla como bloqueada (pista)
+      setPieces(prevPieces => 
+        prevPieces.map(piece => {
+          if (piece.id === randomPiece.id) {
+            return { 
               ...piece, 
               x: correctX,
               y: correctY,
@@ -652,19 +810,68 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
               gridY: correctGridY,
               isPlaced: true,
               isLocked: true // Marcar como bloqueada por pista
-            }
-          : piece
-      )
-    );
+            };
+          } else if (piece.id === existingPieceInCorrectPosition.id) {
+            // Devolver la pieza incorrecta a la pool
+            const randomX = piecesAreaXStart + Math.random() * (piecesAreaXEnd - piecesAreaXStart);
+            const randomY = piecesAreaYStart + Math.random() * (piecesAreaYEnd - piecesAreaYStart);
+            const randomRotation = (Math.random() - 0.5) * 30;
+            
+            return {
+              ...piece,
+              x: randomX,
+              y: randomY,
+              startX: randomX,
+              startY: randomY,
+              gridX: null,
+              gridY: null,
+              isPlaced: false,
+              isLocked: false,
+              rotation: randomRotation
+            };
+          }
+          return piece;
+        })
+      );
 
-    setPlacedPieces(prev => [...prev, randomPiece.id]);
+      // Actualizar lista de piezas colocadas
+      setPlacedPieces(prev => {
+        const filtered = prev.filter(id => id !== existingPieceInCorrectPosition.id);
+        return [...filtered, randomPiece.id];
+      });
+
+      toast.success(`Pista aplicada: Una pieza se colocó en su posición correcta. La pieza incorrecta fue devuelta a la pool.`, {
+        duration: 3000,
+        icon: '💡'
+      });
+    } else {
+      // No hay conflicto, colocar pieza normalmente
+      setPieces(prevPieces => 
+        prevPieces.map(piece => 
+          piece.id === randomPiece.id 
+            ? { 
+                ...piece, 
+                x: correctX,
+                y: correctY,
+                gridX: correctGridX,
+                gridY: correctGridY,
+                isPlaced: true,
+                isLocked: true // Marcar como bloqueada por pista
+              }
+            : piece
+        )
+      );
+
+      setPlacedPieces(prev => [...prev, randomPiece.id]);
+      
+      toast.success('Pista aplicada: Una pieza se colocó en su posición correcta', {
+        duration: 2000,
+        icon: '💡'
+      });
+    }
+
     setHintCount(prev => prev + 1);
     onHintUsed();
-    
-    toast.success('Pista aplicada: Una pieza se colocó en su posición correcta', {
-      duration: 2000,
-      icon: '💡'
-    });
     
     // Verificar si es la última pieza
     if (placedPieces.length + 1 === PUZZLE_CONFIG.rows * PUZZLE_CONFIG.cols) {
@@ -719,8 +926,10 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
             ? '1px solid #10B981' // Borde más delgado para piezas colocadas
             : isDragging 
               ? isOverAssemblyArea 
-                ? '2px solid #10B981' // Verde más delgado cuando está sobre área de ensamblaje
-                : '2px solid #3B82F6' // Azul más delgado cuando no está sobre área
+                ? piece.canSnap
+                  ? '3px solid #10B981' // Verde más grueso cuando puede hacer snap
+                  : '3px solid #F59E0B' // Amarillo cuando está cerca pero no puede hacer snap
+                : '2px solid #3B82F6' // Azul cuando no está sobre área
               : '0.5px solid #E5E7EB', // Borde muy delgado para piezas no colocadas
       borderRadius: '8px',
       cursor: isLocked ? 'not-allowed' : 'grab',
@@ -731,7 +940,9 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
           ? '0 4px 12px rgba(245, 158, 11, 0.3)' // Sombra dorada para pieza bloqueada inicial
           : isDragging 
             ? isOverAssemblyArea
-              ? '0 8px 25px rgba(16, 185, 129, 0.4)' // Sombra verde cuando está sobre área
+              ? piece.canSnap
+                ? '0 12px 30px rgba(16, 185, 129, 0.6)' // Sombra verde más intensa cuando puede hacer snap
+                : '0 8px 25px rgba(245, 158, 11, 0.4)' // Sombra amarilla cuando está cerca
               : '0 8px 25px rgba(59, 130, 246, 0.3)' // Sombra azul normal
             : isPlaced 
               ? '0 2px 8px rgba(16, 185, 129, 0.2)' 
@@ -889,8 +1100,8 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
                 id="puzzle-game-area"
                 className="relative bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl overflow-hidden shadow-md"
                 style={{ 
-                  width: 'min(90vw, 90vh, 800px)',
-                  height: 'min(90vw, 90vh, 800px)',
+                  width: 'min(95vw, 95vh, 1000px)',
+                  height: 'min(95vw, 95vh, 1000px)',
                   aspectRatio: '1'
                 }}
                 onMouseMove={handleMouseMove}
@@ -981,6 +1192,40 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
               </div>
             </div>
           )}
+
+          {/* Indicador de casilla objetivo durante arrastre */}
+          {isDragging && draggedPieceId && (() => {
+            const draggedPiece = pieces.find(p => p.id === draggedPieceId);
+            if (!draggedPiece || !draggedPiece.isOverAssemblyArea || draggedPiece.targetGridX === null) {
+              return null;
+            }
+            
+            const targetX = puzzleDimensions.assemblyAreaX + draggedPiece.targetGridX * puzzleDimensions.pieceWidth;
+            const targetY = puzzleDimensions.assemblyAreaY + draggedPiece.targetGridY * puzzleDimensions.pieceHeight;
+            
+            return (
+              <div
+                className={`absolute border-4 rounded-lg animate-pulse ${
+                  draggedPiece.canSnap 
+                    ? 'bg-green-100 border-green-400' 
+                    : 'bg-yellow-100 border-yellow-400'
+                }`}
+                style={{
+                  left: targetX,
+                  top: targetY,
+                  width: puzzleDimensions.pieceWidth,
+                  height: puzzleDimensions.pieceHeight,
+                  zIndex: 998
+                }}
+              >
+                <div className={`flex items-center justify-center h-full font-bold text-2xl ${
+                  draggedPiece.canSnap ? 'text-green-600' : 'text-yellow-600'
+                }`}>
+                  {draggedPiece.canSnap ? '✅' : '🎯'}
+                </div>
+              </div>
+            );
+          })()}
 
           {/* Renderizar piezas - ordenar para que las no colocadas estén al frente */}
           {pieces
