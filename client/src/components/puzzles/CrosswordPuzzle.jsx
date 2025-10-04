@@ -197,26 +197,33 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
     }
     
     const { row, col } = selectedCell;
-    // USAR LA PISTA ACTUAL en lugar de buscar una nueva
     const clue = currentClue;
     const currentAnswer = userAnswers[clueKey] || '';
     const letterIndex = clue.direction === 'across' ? col - clue.col : row - clue.row;
     
     if (letterIndex >= 0 && letterIndex < clue.length) {
-      const newAnswer = currentAnswer.split('');
-      newAnswer[letterIndex] = letter.toUpperCase();
-      const updatedAnswer = newAnswer.join('');
+      // Crear array con la longitud completa de la palabra, rellenando con espacios si es necesario
+      const answerArray = currentAnswer.split('');
+      while (answerArray.length < clue.length) {
+        answerArray.push('');
+      }
+      
+      // Insertar la letra en la posición específica
+      answerArray[letterIndex] = letter.toUpperCase();
+      const updatedAnswer = answerArray.join('');
       
       setUserAnswers(prev => ({
         ...prev,
         [clueKey]: updatedAnswer
       }));
 
-      // Verificar si la palabra está completa y es correcta
-      if (updatedAnswer.length === clue.length) {
+      // Verificar si la palabra está completa (todas las posiciones tienen letras)
+      const isComplete = updatedAnswer.length === clue.length && !updatedAnswer.includes('');
+      
+      if (isComplete) {
+        // Validar solo cuando la palabra esté completamente llena
         if (updatedAnswer === clue.word) {
           // Palabra correcta - BLOQUEARLA
-          const clueKey = `${clue.number}-${clue.direction}`;
           setCompletedWords(prev => {
             const newSet = new Set([...prev, clueKey]);
             return newSet;
@@ -264,10 +271,10 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
             duration: 2000
           });
         }
+      } else {
+        // Si no está completa, solo mostrar feedback positivo sin validar
+        // No mover automáticamente - permitir que el usuario navegue libremente
       }
-
-      // Mover automáticamente SOLO dentro de la palabra actual
-      moveToNextCellInCurrentWord(clue, letterIndex);
     }
   };
 
@@ -311,14 +318,8 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
       'SHIFT', 'CONTROL', 'ALT', 'META', 'CAPSLOCK', 'TAB', 'ENTER', 'ESCAPE',
       'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
       'SPACE', 'PAGEUP', 'PAGEDOWN', 'HOME', 'END', 'INSERT', 'NUMLOCK',
-      'SCROLLLOCK', 'PAUSE', 'CONTEXTMENU', 'PRINTSCREEN', 'BACKSPACE', 'DELETE'
+      'SCROLLLOCK', 'PAUSE', 'CONTEXTMENU', 'PRINTSCREEN', 'DELETE'
     ];
-    
-    // Bloquear teclas especiales
-    if (blockedKeys.includes(key)) {
-      event.preventDefault();
-      return;
-    }
     
     // Prevenir comportamiento por defecto del navegador para todas las teclas
     event.preventDefault();
@@ -327,13 +328,59 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
     if (key >= 'A' && key <= 'Z') {
       handleLetterInput(key);
     }
+    // Tecla Backspace para borrar
+    else if (key === 'BACKSPACE') {
+      handleBackspace();
+    }
     // Teclas de flecha para navegar
     else if (key === 'ARROWUP' || key === 'ARROWDOWN' || key === 'ARROWLEFT' || key === 'ARROWRIGHT') {
       navigateWithArrows(key);
     }
     // Bloquear cualquier otra tecla no permitida
-    else {
+    else if (blockedKeys.includes(key)) {
       event.preventDefault();
+      return;
+    }
+  };
+
+  // Manejar borrado de letra con Backspace
+  const handleBackspace = () => {
+    if (!selectedCell || gameCompleted || !currentClue) return;
+    
+    // Verificar si la palabra actual ya está completada y bloqueada
+    const clueKey = `${currentClue.number}-${currentClue.direction}`;
+    if (completedWords.has(clueKey)) {
+      toast('Esta palabra ya está completada y bloqueada', {
+        duration: 2000,
+        icon: '🔒',
+        style: {
+          background: '#6B7280',
+          color: '#fff',
+        },
+      });
+      return;
+    }
+    
+    const { row, col } = selectedCell;
+    const clue = currentClue;
+    const currentAnswer = userAnswers[clueKey] || '';
+    const letterIndex = clue.direction === 'across' ? col - clue.col : row - clue.row;
+    
+    if (letterIndex >= 0 && letterIndex < clue.length && currentAnswer.length > letterIndex) {
+      // Crear array con la longitud completa de la palabra, rellenando con espacios si es necesario
+      const answerArray = currentAnswer.split('');
+      while (answerArray.length < clue.length) {
+        answerArray.push('');
+      }
+      
+      // Borrar la letra en la posición específica
+      answerArray[letterIndex] = '';
+      const updatedAnswer = answerArray.join('');
+      
+      setUserAnswers(prev => ({
+        ...prev,
+        [clueKey]: updatedAnswer
+      }));
     }
   };
 
@@ -527,9 +574,9 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
         type: 'instructions',
         instructions: [
           'Haz clic en una celda para comenzar a escribir una palabra',
-          'Se mueve automáticamente dentro de la palabra seleccionada',
-          'Completa todas las palabras para ganar',
-          'Te recomendamos seguir el orden en que se completa el crucigrama',
+          'Puedes escribir letra por letra en cualquier orden',
+          'La validación ocurre solo al completar la última letra',
+          'Usa las flechas para navegar y Backspace para borrar',
           'Cada palabra correcta muestra una curiosidad académica'
         ]
       },
@@ -621,8 +668,8 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
                 {/* Instrucciones de teclado - MOVIDAS ARRIBA */}
                 <div className="text-center text-gray-600 text-sm mb-4">
                   <p>Usa las teclas del alfabeto para ingresar letras.</p>
-                  <p>Se mueve automáticamente dentro de la palabra seleccionada.</p>
-                  <p>Usa las flechas para navegación manual opcional.</p>
+                  <p>Puedes escribir letra por letra en cualquier orden.</p>
+                  <p>Usa las flechas para navegar y Backspace para borrar.</p>
                   {currentClue && writingMode && (
                     <p className="mt-2 text-blue-600 font-semibold">
                       Palabra {currentClue.number}: {currentClue.direction === 'across' ? '→' : '↓'} {currentClue.definition}

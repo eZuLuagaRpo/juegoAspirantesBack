@@ -30,7 +30,7 @@ import { useGameCompletion } from '../hooks/useGameCompletion';
 import toast from 'react-hot-toast';
 
 const Dashboard = () => {
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
   const { 
     levels, 
     userProgress, 
@@ -177,8 +177,21 @@ const Dashboard = () => {
       });
       
       if (response.ok) {
-        // Actualizar el estado del usuario localmente
-        user.isFirstLogin = false;
+        // Verificar el token para obtener el estado actualizado del usuario
+        const verifyResponse = await fetch('/api/auth/verify', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        
+        if (verifyResponse.ok) {
+          const verifyData = await verifyResponse.json();
+          if (verifyData.success) {
+            // Actualizar el estado del usuario en el contexto
+            // Esto evita que el modal aparezca nuevamente
+            updateUser({ isFirstLogin: false });
+          }
+        }
       }
     } catch (error) {
       console.error('Error marcando primer login como completado:', error);
