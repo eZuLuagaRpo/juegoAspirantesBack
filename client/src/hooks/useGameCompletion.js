@@ -54,6 +54,20 @@ export const useGameCompletion = () => {
     
     try {
       const response = await fetch(`/api/progress/${user.id}/completion`);
+      
+      // Verificar si la respuesta es exitosa
+      if (!response.ok) {
+        console.warn(`⚠️ API /completion respondió con status ${response.status}`);
+        return false;
+      }
+      
+      // Verificar si la respuesta es JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.warn('⚠️ API /completion no devolvió JSON');
+        return false;
+      }
+      
       const data = await response.json();
       
       if (data.success && data.data.gameCompleted) {
@@ -157,18 +171,27 @@ export const useGameCompletion = () => {
 
   // Mostrar modal de recompensa cuando se complete el juego
   const handleGameCompletion = () => {
-    if (!user || !userProgress) return;
+    if (!user || !userProgress) {
+      console.warn('⚠️ handleGameCompletion: Usuario o progreso no disponible');
+      return;
+    }
+
+    console.log('🎉 ¡Juego completado! Generando código de recompensa...');
+    console.log('📊 Estrellas totales:', userProgress.totalStars);
 
     // Obtener información de la recompensa
     const reward = getRewardInfo(userProgress.totalStars);
+    console.log('🎁 Recompensa obtenida:', reward);
     setRewardData(reward);
 
     // Generar código único
     const timestamp = Date.now();
     const code = generateCompletionCode(user.id, timestamp);
+    console.log('🔑 Código generado:', code);
     setCompletionCode(code);
 
     // Mostrar modal de código directamente (sin modal de recompensa intermedio)
+    console.log('📱 Abriendo modal de código...');
     setShowCodeModal(true);
   };
 

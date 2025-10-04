@@ -65,6 +65,21 @@ export const useRewardNotifications = (userProgress, rewards) => {
         })
       });
       
+      // Verificar si la respuesta es exitosa
+      if (!response.ok) {
+        console.warn(`⚠️ API /check-availability respondió con status ${response.status}`);
+        setIsChecking(false);
+        return [];
+      }
+      
+      // Verificar si la respuesta es JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.warn('⚠️ API /check-availability no devolvió JSON');
+        setIsChecking(false);
+        return [];
+      }
+      
       const data = await response.json();
       if (data.success && data.data.totalAvailable > 0) {
         const newRewards = [

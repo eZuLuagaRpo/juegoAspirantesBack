@@ -4,6 +4,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig(({ mode }) => {
   const isDevelopment = mode === 'development';
   
+  // Usar backend de Render si no hay uno local
+  const backendUrl = process.env.VITE_BACKEND_URL || 'https://juegoaspirantesback.onrender.com';
+  
   return {
     plugins: [react()],
     server: {
@@ -12,9 +15,10 @@ export default defineConfig(({ mode }) => {
       ...(isDevelopment && {
         proxy: {
           '/api': {
-            target: 'http://localhost:5000',
+            target: backendUrl,
             changeOrigin: true,
-            secure: false
+            secure: false,
+            rewrite: (path) => path
           }
         }
       })

@@ -798,7 +798,8 @@ const allFinancialProblems = [
           'Lee cuidadosamente cada problema financiero',
           'Usa la calculadora integrada si necesitas',
           'Ingresa tu respuesta en el campo numérico',
-          'Cada respuesta correcta te da consejos financieros'
+          'Cada respuesta correcta te da consejos financieros',
+          'NOTA: para escribir en el campo de respuesta, debes ocultar la calculadora'
         ]
       },
       {
