@@ -202,6 +202,11 @@ router.get('/verify', async (req, res) => {
       });
     }
     
+    // Asegurar que isFirstLogin sea consistente con el estado real
+    // Si el usuario ya tiene progreso o ha jugado antes, no debería ser primer login
+    const userProgress = await UserService.getUserProgress(decoded.userId);
+    const shouldBeFirstLogin = userProgress && userProgress.totalStars > 0 ? false : user.isFirstLogin;
+    
     res.json({
       success: true,
       data: {
@@ -215,7 +220,7 @@ router.get('/verify', async (req, res) => {
           studentId: user.studentId,
           role: user.role,
           createdAt: user.createdAt,
-          isFirstLogin: user.isFirstLogin
+          isFirstLogin: shouldBeFirstLogin
         }
       }
     });

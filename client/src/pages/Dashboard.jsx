@@ -95,13 +95,14 @@ const Dashboard = () => {
       clearDuplicateNotifications();
       
       // Verificar si es el primer login del usuario
-      if (user.isFirstLogin) {
+      // Solo mostrar el modal si es realmente el primer login Y no hay progreso previo
+      if (user.isFirstLogin && (!userProgress || userProgress.totalStars === 0)) {
         setShowWelcomeModal(true);
       }
       
       return () => clearTimeout(timeoutId);
     }
-  }, [user, clearDuplicateNotifications]);
+  }, [user, userProgress, clearDuplicateNotifications]);
 
   // Timeout de seguridad para evitar loading infinito
   useEffect(() => {
@@ -177,6 +178,10 @@ const Dashboard = () => {
       });
       
       if (response.ok) {
+        // Actualizar inmediatamente el estado del usuario en el contexto
+        // Esto evita que el modal aparezca nuevamente
+        updateUser({ isFirstLogin: false });
+        
         // Verificar el token para obtener el estado actualizado del usuario
         const verifyResponse = await fetch('/api/auth/verify', {
           headers: {
@@ -187,14 +192,15 @@ const Dashboard = () => {
         if (verifyResponse.ok) {
           const verifyData = await verifyResponse.json();
           if (verifyData.success) {
-            // Actualizar el estado del usuario en el contexto
-            // Esto evita que el modal aparezca nuevamente
-            updateUser({ isFirstLogin: false });
+            // Actualizar con el estado real del servidor
+            updateUser(verifyData.data.user);
           }
         }
       }
     } catch (error) {
       console.error('Error marcando primer login como completado:', error);
+      // Aún así, actualizar el estado local para evitar que el modal aparezca
+      updateUser({ isFirstLogin: false });
     }
   };
 

@@ -145,6 +145,26 @@ class UserService {
   static async verifyPassword(plainPassword, hashedPassword) {
     return await bcrypt.compare(plainPassword, hashedPassword);
   }
+  
+  // Obtener progreso del usuario
+  static async getUserProgress(userId) {
+    const result = await query(`
+      SELECT user_id, current_level, total_stars, achievements, last_played
+      FROM user_progress 
+      WHERE user_id = $1
+    `, [userId]);
+    
+    if (result.rows.length === 0) return null;
+    
+    const progress = result.rows[0];
+    return {
+      userId: progress.user_id,
+      currentLevel: progress.current_level,
+      totalStars: progress.total_stars,
+      achievements: progress.achievements,
+      lastPlayed: progress.last_played
+    };
+  }
 }
 
 module.exports = UserService;
