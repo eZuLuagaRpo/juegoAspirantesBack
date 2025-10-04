@@ -377,64 +377,68 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
   const handleKeyPress = (event) => {
     if (gameCompleted) return;
     
-    const key = event.key.toUpperCase();
+    // Prevenir comportamiento por defecto del navegador SIEMPRE
+    event.preventDefault();
     
-    // Lista completa de teclas especiales a bloquear
+    const key = event.key;
+    
+    // Lista completa de teclas especiales a bloquear (verificar tanto mayúsculas como minúsculas)
     const blockedKeys = [
       // Teclas modificadoras
-      'SHIFT', 'CONTROL', 'ALT', 'ALTGRAPH', 'META', 'CAPSLOCK',
+      'Shift', 'Control', 'Alt', 'AltGraph', 'Meta', 'CapsLock',
       // Teclas de navegación y control
-      'TAB', 'ENTER', 'ESCAPE', 'SPACE', 'DELETE',
-      'ARROWUP', 'ARROWDOWN', 'ARROWLEFT', 'ARROWRIGHT',
-      'PAGEUP', 'PAGEDOWN', 'HOME', 'END', 'INSERT',
+      'Tab', 'Enter', 'Escape', ' ', 'Delete',
+      'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+      'PageUp', 'PageDown', 'Home', 'End', 'Insert',
       // Teclas de función
       'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12',
       'F13', 'F14', 'F15', 'F16', 'F17', 'F18', 'F19', 'F20', 'F21', 'F22', 'F23', 'F24',
       // Teclas de bloqueo
-      'NUMLOCK', 'SCROLLLOCK', 'PAUSE',
+      'NumLock', 'ScrollLock', 'Pause',
       // Otras teclas especiales
-      'CONTEXTMENU', 'PRINTSCREEN', 'PRINT',
+      'ContextMenu', 'PrintScreen', 'Print',
       // Teclas del teclado numérico (cuando NumLock está desactivado)
-      'CLEAR', 'SELECT', 'EXECUTE', 'HELP',
+      'Clear', 'Select', 'Execute', 'Help',
       // Teclas multimedia
-      'VOLUMEUP', 'VOLUMEDOWN', 'VOLUMEMUTE',
-      'MEDIANEXTTRACK', 'MEDIAPREVIOUSTRACK', 'MEDIASTOP', 'MEDIAPLAYPAUSE',
+      'AudioVolumeUp', 'AudioVolumeDown', 'AudioVolumeMute',
+      'MediaTrackNext', 'MediaTrackPrevious', 'MediaStop', 'MediaPlayPause',
       // Teclas de navegador
-      'BROWSERBACK', 'BROWSERFORWARD', 'BROWSERREFRESH', 'BROWSERSTOP',
-      'BROWSERSEARCH', 'BROWSERFAVORITES', 'BROWSERHOME',
+      'BrowserBack', 'BrowserForward', 'BrowserRefresh', 'BrowserStop',
+      'BrowserSearch', 'BrowserFavorites', 'BrowserHome',
       // Teclas de aplicación
-      'LAUNCHMAIL', 'LAUNCHAPP1', 'LAUNCHAPP2',
+      'LaunchMail', 'LaunchApp1', 'LaunchApp2',
       // Windows/OS specific
-      'OS', 'WIN', 'FNLOCK', 'FN', 'HYPER', 'SUPER',
-      // Teclas de edición especiales
-      'COPY', 'CUT', 'PASTE', 'UNDO', 'REDO', 'FIND', 'AGAIN',
+      'OS', 'Win', 'FnLock', 'Fn', 'Hyper', 'Super',
       // Teclas de proceso
-      'PROCESS', 'ATTN', 'CRSEL', 'EXSEL',
-      // Teclas adicionales
-      'PROPS', 'CANCEL', 'CLEAR', 'ACCEPT', 'MODECHANGE', 'NONCONVERT', 'CONVERT',
-      'KANAMODE', 'HANGULMODE', 'HANJAMODE', 'JUNJAMODE', 'FINALMODE',
-      // Dead keys (teclas muertas para acentos)
-      'DEAD', 'COMPOSE', 'ALPHANUMERIC',
-      // Otras variantes
-      'SHIFTLEFT', 'SHIFTRIGHT', 'CONTROLLEFT', 'CONTROLRIGHT',
-      'ALTLEFT', 'ALTRIGHT', 'METALEFT', 'METARIGHT'
+      'Process', 'Attn', 'CrSel', 'ExSel',
+      // Dead keys
+      'Dead', 'Compose', 'Alphanumeric'
     ];
     
-    // Prevenir comportamiento por defecto del navegador para todas las teclas
-    event.preventDefault();
-    
-    // SOLO permitir letras del alfabeto y Backspace
-    if (key >= 'A' && key <= 'Z') {
-      handleLetterInput(key);
-    }
-    else if (key === 'BACKSPACE') {
-      handleBackspace();
-    }
-    // Bloquear todo lo demás
-    else {
-      // No hacer nada, simplemente ignorar la tecla
+    // Verificar si es una tecla bloqueada
+    if (blockedKeys.includes(key)) {
       return;
     }
+    
+    // Verificar si la tecla tiene más de 1 carácter (teclas especiales como "Shift", "Meta", etc.)
+    if (key.length > 1 && key !== 'Backspace') {
+      // Es una tecla especial que no queremos, ignorarla
+      return;
+    }
+    
+    // SOLO permitir:
+    // 1. Letras del alfabeto (A-Z, a-z)
+    // 2. Backspace
+    const upperKey = key.toUpperCase();
+    
+    if (key === 'Backspace') {
+      handleBackspace();
+    }
+    else if (upperKey >= 'A' && upperKey <= 'Z' && key.length === 1) {
+      // Solo letras individuales del alfabeto
+      handleLetterInput(upperKey);
+    }
+    // Cualquier otra tecla se ignora silenciosamente
   };
 
   // Manejar borrado de letra con Backspace
