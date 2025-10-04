@@ -177,7 +177,7 @@ router.post('/login', [
           studentId: user.studentId,
           role: user.role,
           createdAt: user.createdAt,
-          isFirstLogin: wasFirstLogin
+          isFirstLogin: user.isFirstLogin // Usar el valor actualizado
         },
         token
       }

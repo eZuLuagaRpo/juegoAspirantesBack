@@ -141,6 +141,7 @@ router.post('/login', [
     const wasFirstLogin = user.isFirstLogin;
     if (user.isFirstLogin) {
       await UserService.updateFirstLogin(user.id);
+      user.isFirstLogin = false; // Actualizar el objeto local también
     }
     
     // Generar token JWT
@@ -164,7 +165,7 @@ router.post('/login', [
           studentId: user.studentId,
           role: user.role,
           createdAt: user.createdAt,
-          isFirstLogin: wasFirstLogin
+          isFirstLogin: user.isFirstLogin // Usar el valor actualizado
         },
         token
       }
