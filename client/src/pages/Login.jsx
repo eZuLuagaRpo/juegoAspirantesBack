@@ -38,7 +38,7 @@ const Login = () => {
         navigate('/dashboard');
       }
     } catch (error) {
-      console.error('Error en login:', error);
+      // Error manejado por el contexto de autenticación
     } finally {
       setIsLoading(false);
     }

@@ -37,6 +37,20 @@ const Register = () => {
     
     try {
       const response = await fetch(`/api/auth/check-student-id/${studentId}`);
+      
+      // Verificar si la respuesta es exitosa
+      if (!response.ok) {
+        setIsCheckingStudentId(false);
+        return;
+      }
+      
+      // Verificar si la respuesta es JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        setIsCheckingStudentId(false);
+        return;
+      }
+      
       const data = await response.json();
       
       if (data.exists) {
@@ -45,7 +59,7 @@ const Register = () => {
         setStudentIdError('');
       }
     } catch (error) {
-      console.error('Error verificando número de identificación:', error);
+      // Error silencioso - no afecta el registro
     } finally {
       setIsCheckingStudentId(false);
     }
@@ -62,6 +76,20 @@ const Register = () => {
     
     try {
       const response = await fetch(`/api/auth/check-phone/${phone}`);
+      
+      // Verificar si la respuesta es exitosa
+      if (!response.ok) {
+        setIsCheckingPhone(false);
+        return;
+      }
+      
+      // Verificar si la respuesta es JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        setIsCheckingPhone(false);
+        return;
+      }
+      
       const data = await response.json();
       
       if (data.exists) {
@@ -70,7 +98,7 @@ const Register = () => {
         setPhoneError('');
       }
     } catch (error) {
-      console.error('Error verificando número de celular:', error);
+      // Error silencioso - no afecta el registro
     } finally {
       setIsCheckingPhone(false);
     }

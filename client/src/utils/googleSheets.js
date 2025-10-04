@@ -5,17 +5,14 @@ export const submitToGoogleSheets = async (userData, rewardData, completionCode)
   
   // Validar datos requeridos
   if (!userData || !userData.studentId || !userData.firstName || !userData.lastName || !userData.email) {
-    console.error('❌ Datos de usuario incompletos:', userData);
     return { success: false, error: 'Datos de usuario incompletos' };
   }
   
   if (!rewardData || !rewardData.title) {
-    console.error('❌ Datos de recompensa incompletos:', rewardData);
     return { success: false, error: 'Datos de recompensa incompletos' };
   }
   
   if (!completionCode) {
-    console.error('❌ Código de completación faltante');
     return { success: false, error: 'Código de completación faltante' };
   }
   
@@ -44,12 +41,6 @@ export const submitToGoogleSheets = async (userData, rewardData, completionCode)
     
     return { success: true };
   } catch (error) {
-    console.error('❌ Error enviando datos a Google Sheets:', error);
-    console.error('🔍 Detalles del error:', {
-      name: error.name,
-      message: error.message,
-      stack: error.stack
-    });
     return { success: false, error: error.message };
   }
 };

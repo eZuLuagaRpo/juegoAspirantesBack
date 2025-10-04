@@ -71,7 +71,7 @@ const Profile = () => {
         setIsEditing(false);
       }
     } catch (error) {
-      console.error('Error actualizando perfil:', error);
+      // Error manejado por toast
     }
   };
 
