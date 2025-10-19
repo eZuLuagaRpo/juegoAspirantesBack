@@ -711,13 +711,23 @@ const allFinancialProblems = [
       setCalculatorValue('0');
     } else if (value === '=') {
       try {
-        const result = eval(calculatorValue);
+        // Convertir porcentajes antes de evaluar
+        let expression = calculatorValue;
+        
+        // Buscar patrones como "número%" y reemplazarlos con "número/100"
+        // Por ejemplo: "200 * 20%" se convierte en "200 * (20/100)"
+        expression = expression.replace(/(\d+\.?\d*)%/g, '($1/100)');
+        
+        const result = eval(expression);
         setCalculatorValue(result.toString());
       } catch (error) {
         setCalculatorValue('Error');
       }
     } else if (value === '←') {
       setCalculatorValue(prev => prev.length > 1 ? prev.slice(0, -1) : '0');
+    } else if (value === '%') {
+      // Agregar el símbolo % al final
+      setCalculatorValue(prev => prev === '0' ? '0%' : prev + '%');
     } else {
       setCalculatorValue(prev => prev === '0' ? value : prev + value);
     }
