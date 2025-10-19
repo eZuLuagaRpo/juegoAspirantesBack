@@ -625,6 +625,7 @@ const CrosswordPuzzle = forwardRef(({ onComplete, onHintUsed, onError }, ref) =>
         type: 'instructions',
         instructions: [
           'Haz clic en una celda para comenzar a escribir una palabra',
+          'Para conocer las definiciones, haz clic sobre la celda inicial de cada palabra y aparecerá en la parte superior de la pantalla',
           'Escritura secuencial: Se mueve automáticamente entre celdas',
           'La validación ocurre al completar todas las letras de la palabra',
           'Cada palabra correcta muestra una curiosidad académica'
