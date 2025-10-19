@@ -1260,7 +1260,7 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
                 <div className="text-6xl mb-6 animate-sparkle">💫</div>
                 <h2 className="text-4xl font-bold mb-6 animate-fade-in-up">MENSAJE DE BIENVENIDA</h2>
                 <p className="text-2xl mb-8 italic leading-relaxed animate-fade-in-up">
-                  "¡Bienvenido/a a nuestra institución educativa!<br/>
+                  "¡Bienvenid@ a nuestra institución educativa!<br/>
                   Juntos construimos conocimiento y futuro."
                 </p>
                 <div className="text-lg mb-6 animate-fade-in-up">
@@ -1282,7 +1282,7 @@ const JigsawPuzzle = forwardRef(({ onComplete, onHintUsed, onError, timeSpent },
                 <h2 className="text-4xl font-bold mb-4">¡FELICITACIONES!</h2>
                 <p className="text-xl mb-6">Has completado exitosamente el rompecabezas.</p>
                 <div className="text-2xl mb-6">💫 MENSAJE DE BIENVENIDA REVELADO 💫</div>
-                <p className="text-lg mb-8 italic">"¡Bienvenido/a a nuestra institución educativa!<br/>Juntos construimos conocimiento y futuro."</p>
+                <p className="text-lg mb-8 italic">"¡Bienvenid@ a nuestra institución educativa!<br/>Juntos construimos conocimiento y futuro."</p>
                 <div className="text-lg mb-6">
                   <span className="mr-4">🏆 Tiempo: {Math.floor(timeSpent / 60)}:{(timeSpent % 60).toString().padStart(2, '0')}</span>
                   <span>📊 Movimientos: {moves}</span>

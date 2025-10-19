@@ -53,7 +53,7 @@ const Login = () => {
             <img src="/logo.png" alt="USB Logo" className="w-14 h-20 object-contain" />
           </div>
           <h2 className="text-3xl font-bold usb-dark font-display">
-            ¡Bienvenido de vuelta!
+            ¡Bienvenid@ de vuelta!
           </h2>
             <p className="mt-2 text-sm usb-light">
               Continúa tu aventura educativa en la USB Medellín.

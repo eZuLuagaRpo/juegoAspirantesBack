@@ -341,7 +341,7 @@ const Dashboard = () => {
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold usb-dark font-display">
-                ¡Bienvenido, {user?.firstName}!
+                ¡Bienvenid@, {user?.firstName}!
               </h1>
               <p className="usb-light mt-2">
                 Continúa tu aventura educativa en la USB Medellín.

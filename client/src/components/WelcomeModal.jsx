@@ -61,7 +61,7 @@ const WelcomeModal = ({ isOpen, onClose }) => {
               <img src="/logo.png" alt="USB Logo" className="w-12 h-16 object-contain" />
             </div>
             <h1 className="text-3xl font-bold mb-2">
-              ¡Bienvenido a la USB Medellín!
+              ¡Bienvenid@ a la USB Medellín!
             </h1>
             <p className="text-xl text-orange-100">
               Tu aventura educativa está por comenzar

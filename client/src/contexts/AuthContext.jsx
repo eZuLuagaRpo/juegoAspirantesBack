@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('token', userToken);
       axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
       
-      toast.success('¡Bienvenido de vuelta!');
+      toast.success('¡Bienvenid@ de vuelta!');
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.error || 'Error en el login';
@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem('token', userToken);
       axios.defaults.headers.common['Authorization'] = `Bearer ${userToken}`;
       
-      toast.success('¡Registro exitoso! Bienvenido al juego');
+      toast.success('¡Registro exitoso! Bienvenid@ al juego');
       return { success: true };
     } catch (error) {
       const message = error.response?.data?.error || 'Error en el registro';
