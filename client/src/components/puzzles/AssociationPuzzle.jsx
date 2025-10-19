@@ -546,10 +546,10 @@ const AssociationPuzzle = forwardRef(({
         title: '⏱️ Penalización por Tiempo',
         type: 'list',
         items: [
-          '≤ 4.5 min: -0 estrellas ✅',
-          '4.5-7 min: -1 estrella ⚠️',
-          '7-9 min: -2 estrellas ⚠️',
-          '9-12 min: -3 estrellas ❌'
+          '≤ 3.5 min: -0 estrellas ✅',
+          '3.5-6 min: -1 estrella ⚠️',
+          '6-8 min: -2 estrellas ⚠️',
+          '8-11 min: -3 estrellas ❌'
         ]
       },
       {

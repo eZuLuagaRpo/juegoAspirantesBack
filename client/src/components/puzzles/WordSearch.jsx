@@ -585,10 +585,10 @@ const WordSearch = forwardRef(({
         title: '⏱️ Penalización por Tiempo',
         type: 'list',
         items: [
-          '≤ 7 min: -0 estrellas ✅',
-          '7-8 min: -1 estrella ⚠️',
-          '8-9 min: -2 estrellas ⚠️',
-          '9-10 min: -3 estrellas ❌'
+          '≤ 6 min: -0 estrellas ✅',
+          '6-7 min: -1 estrella ⚠️',
+          '7-8 min: -2 estrellas ⚠️',
+          '8-9 min: -3 estrellas ❌'
         ]
       },
       {

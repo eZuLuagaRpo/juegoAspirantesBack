@@ -833,10 +833,10 @@ const allFinancialProblems = [
         title: '⏱️ Penalización por Tiempo',
         type: 'list',
         items: [
-          '≤ 9 min: -0 estrellas ✅',
-          '9-12 min: -1 estrella ⚠️',
-          '12-15 min: -2 estrellas ⚠️',
-          '>15 min: -3 estrellas ❌'
+          '≤ 8 min: -0 estrellas ✅',
+          '8-11 min: -1 estrella ⚠️',
+          '11-14 min: -2 estrellas ⚠️',
+          '>14 min: -3 estrellas ❌'
         ]
       },
       {

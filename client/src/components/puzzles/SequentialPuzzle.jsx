@@ -351,10 +351,10 @@ const SequentialPuzzle = forwardRef(({
         title: '⏱️ Penalización por Tiempo',
         type: 'list',
         items: [
-          '≤ 3.5 min: -0 estrellas ✅',
-          '3.5-5 min: -1 estrella ⚠️',
-          '5-6 min: -2 estrellas ⚠️',
-          '6-7 min: -3 estrellas ❌'
+          '≤ 2.5 min: -0 estrellas ✅',
+          '2.5-4 min: -1 estrella ⚠️',
+          '4-5 min: -2 estrellas ⚠️',
+          '5-6 min: -3 estrellas ❌'
         ]
       },
       {
